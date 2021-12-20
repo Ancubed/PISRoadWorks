@@ -17,10 +17,10 @@ function MyApp({ Component, pageProps }) {
        
           Powered by  
           <a
-          href="https://vk.com/shiningblack00"
+          href="https://github.com/Ancubed"
           target="_blank"
           rel="noopener noreferrer"
-          >Andrew Antonov</a>
+          > Andrew Antonov</a>
       </footer>
     </div>
   );
