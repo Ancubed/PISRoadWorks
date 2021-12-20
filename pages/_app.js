@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <div>
       <Head>
-        <title>Roadworks</title>
+        <title>PISRoadWorks</title>
         <meta name="description" content="Организация дорожных работ" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
