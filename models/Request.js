@@ -16,6 +16,6 @@ const RequestSchema = new mongoose.Schema({
       required: [true, 'Пожалуйста, передайте статус работы'],
       maxlength: [30, 'статус работы не может быть больше 30 символов'],
     }
-})
+});
   
-export default mongoose.models.Request || mongoose.model('Request', RequestSchema)
+export default mongoose.models.Request || mongoose.model('Request', RequestSchema);
