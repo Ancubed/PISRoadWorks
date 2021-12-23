@@ -12,12 +12,12 @@ export default function Indicators({ executors }) {
                 <tbody>
                     <Row companyName='Название' total='Всего' done='Выполнено' inProgress='Выполняется' expired='Просрочено' grade='Оценка' isHeader={true}></Row>
                     {executors.map((executor, key) => 
-                        <Row companyName={executor.companyName}
-                        total={executor.total}
-                        done={executor.done}
-                        inProgress={executor.inProgress} 
-                        expired={executor.expired}
-                        grade={executor.grade}
+                        <Row companyName={executor.companyName || 'Скрытая компания'}
+                        total={executor.total || 0}
+                        done={executor.done|| 0}
+                        inProgress={executor.inProgress|| 0} 
+                        expired={executor.expired|| 0}
+                        grade={executor.grade|| 0}
 
                         key={key}>
                         </Row>
@@ -163,7 +163,7 @@ async function aggregateExecutors() {
     }]);
     return result.map((executor) => {
         executor.id = executor._id.companyId.toString();
-        executor.name = executor._id.companyName;
+        executor.companyName = executor._id.companyName;
         for (let i=0; i < executor.requests.length; i++) {
             let status = executor.requests[i].status;
             executor[status] = executor.requests[i].count;
@@ -172,17 +172,6 @@ async function aggregateExecutors() {
         delete executor.requests;
         return executor;
     });
-}
-
-function filterRequests(requests) {
-    let total = 0, done = 0, inProgress = 0, expired = 0;
-    if (requests && requests.length != 0) {
-        total = requests.length;
-        done = requests.filter(req => req.status == 'done').length;
-        inProgress = requests.filter(req => req.status == 'inProgress').length;
-        expired = requests.filter(req => req.status == 'expired').length;
-    }
-    return { total, done, inProgress, expired };
 }
 
 async function sortByGrade(executors) {
@@ -195,14 +184,6 @@ async function sortByGrade(executors) {
 
 export async function getServerSideProps() {
     let executors = await aggregateExecutors();
-    // executors.forEach(executor => {
-    //     let { total, done, inProgress, expired } = filterRequests(executor.requests);
-    //     executor.total = total;
-    //     executor.done = done;
-    //     executor.inProgress = inProgress;
-    //     executor.expired = expired;
-    //     delete executor.requests;
-    // });
     console.log(executors);
     return { props: { executors: await sortByGrade(executors) } };
   }
