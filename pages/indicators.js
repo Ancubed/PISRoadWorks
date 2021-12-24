@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Row from '../components/row';
-//import dbConnect from '../lib/mongoose';
+import dbConnect from '../lib/mongoose';
 // import UserModel from '../models/User';
-//import RequestModel from '../models/Request';
+import RequestModel from '../models/Request';
 
 const matrixWeight = {
     done: 3,
@@ -34,7 +34,7 @@ export default function Indicators({ executors }) {
     )
 }
 
-const result = [
+let result = [ // Данные при отсутствии подключения к mongo atlas
     {
       id: '61c17e2a842819c5a3c627fb',
       companyName: 'Дорстрой',
@@ -45,7 +45,9 @@ const result = [
     {
       id: '61c17e2a842819c5a3c627fb',
       companyName: 'Уфа-строй',
-      inProgress: 1
+      done: 0,
+      inProgress: 1,
+      expired: 0
     },
     {
       id: '61c17e76842819c5a3c62804',
@@ -85,56 +87,61 @@ function checkStatusCount(executor) {
 }
 
 async function aggregateExecutors() {
-    await dbConnect();
-    const result = await RequestModel.aggregate([
-        {
-            $match: {
-                "status": { $nin: ["new"]}
-            }
-        },
-        {
-            $group: {
-                _id: {
-                    "status": "$status",
-                    "companyId": "$companyId",
-                    "companyName": "$companyName"
-                },
-                "count": { "$sum": 1 }
-            }
-        },
-        { 
-            $group: {
-            _id: {
-                "companyId": "$_id.companyId",
-                "companyName": "$_id.companyName"
+    try {
+        await dbConnect();
+        result = await RequestModel.aggregate([
+            {
+                $match: {
+                    "status": { $nin: ["new"]}
+                }
             },
-            "requests": {
-                "$push": {
-                    "status": "$_id.status",
-                    "count": "$count"
+            {
+                $group: {
+                    _id: {
+                        "status": "$status",
+                        "companyId": "$companyId",
+                        "companyName": "$companyName"
+                    },
+                    "count": { "$sum": 1 }
+                }
+            },
+            { 
+                $group: {
+                _id: {
+                    "companyId": "$_id.companyId",
+                    "companyName": "$_id.companyName"
+                },
+                "requests": {
+                    "$push": {
+                        "status": "$_id.status",
+                        "count": "$count"
+                    }
                 }
             }
-        }
-    }]);
-    return result.map((executor) => {
-        executor.id = executor._id.companyId.toString();
-        executor.companyName = executor._id.companyName;
-        for (let i = 0; i < executor.requests.length; i++) {
-            const status = executor.requests[i].status;
-            const count = executor.requests[i].count;
-            executor[status] = count;
-        }
-        delete executor._id;
-        delete executor.requests;
-        return checkStatusCount(executor);
-    });
+        }]);
+        return result.map((executor) => {
+            executor.id = executor._id.companyId.toString();
+            executor.companyName = executor._id.companyName;
+            for (let i = 0; i < executor.requests.length; i++) {
+                const status = executor.requests[i].status;
+                const count = executor.requests[i].count;
+                executor[status] = count;
+            }
+            delete executor._id;
+            delete executor.requests;
+            return checkStatusCount(executor);
+        });
+    } catch (err) {
+        console.log('Ошибка подключения к atlas: ' + err);
+    }
+    return result;
 }
 
 async function decisionMatrix(executors) {
     for (let i = 0; i < executors.length; i++) {
-        const done = executors[i].done || 0, 
-        inProgress = executors[i].inProgress || 0,
-        expired = executors[i].expired || 0;
+        const done = executors[i].done, 
+        inProgress = executors[i].inProgress,
+        expired = executors[i].expired;
         executors[i].grade = done * matrixWeight.done 
         + inProgress * matrixWeight.inProgress
         + expired * matrixWeight.expired;
@@ -161,10 +168,8 @@ async function sortByGrade(executors) {
 
 export async function getServerSideProps() {
     //let result = await aggregateExecutors(); // Результат аггрегации
-    result.forEach(exec => { // Код провеки статусов при отсутствии подключния к mongo atlas
-        checkStatusCount(exec);
-    });
-
+    let result = await aggregateExecutors();
+    result = await checkStatusCount(result);
     const gradedExecutors = await decisionMatrix(result); // Подсчет решения
     const executors = await gradeNormalize(gradedExecutors); // Нормализация значений (от 0 до 100)
     const sortedExecutors = await sortByGrade(executors); // Сортировка по оценке
