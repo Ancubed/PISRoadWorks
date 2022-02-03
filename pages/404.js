@@ -1,5 +1,5 @@
-import Error from "../components/error";
+import Error from '../components/error'
 
 export default function Custom404() {
-    return <Error errStatusCode={404} errMessage='Страница не найдена' />
+    return <Error errStatusCode={404} errMessage="Страница не найдена" />
 }

@@ -1,5 +1,5 @@
-import Error from "../components/error";
+import Error from '../components/error'
 
 export default function Custom500() {
-    return <Error errStatusCode={500} errMessage='Страница не найдена'/>
+    return <Error errStatusCode={500} errMessage="Страница не найдена" />
 }
