@@ -18,8 +18,7 @@ async function getUser(credentials) {
     ? {
         id: user._id.toString(),
         name: user.name,
-        company: user.company,
-        role: user.role
+        email: user.email
     } 
     : null;
 }
@@ -45,5 +44,23 @@ export default NextAuth({
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, account }) {
+            if (account) {
+                let user = await UserModel.findOne({
+                    _id: account.providerAccountId
+                });
+                token.company = user?.company,
+                token.role = user?.role
+            }
+            return token
+        },
+        async session({ session, token, user }) {
+            session?.user?.company = token?.company,
+            session?.user?.role = token?.role
+            //console.log(session, token);
+            return session
+        }
+    },
     secret: process.env.jwtSecret,
 });
