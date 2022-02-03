@@ -1,20 +1,29 @@
 import { useSession, getSession } from 'next-auth/react'
 import Error from '../../components/error'
+import AdminAccount from '../../components/executorAccount'
+import ExecutorAccount from '../../components/executorAccount'
+import CustomerAccount from '../../components/executorAccount'
 
-export default function Page() {
+export default function Account() {
     const { data: session } = useSession()
-    if (session) {
-        switch (session.user.role) {
-            case 'admin':
-                return (
-                    <main>
-                        <h1>Protected Page {session.user.name}</h1>
-                        <p>You can view this page because you are signed in.</p>
-                    </main>
-                )
-        }
+
+    if (!session) return <Error errStatusCode={403} errMessage="Нет доступа" />
+
+    switch (session.user.role) {
+        case 'admin':
+            return <AdminAccount />
+        case 'executor':
+            return <ExecutorAccount />
+        case 'customer':
+            return <CustomerAccount />
+        default:
+            return (
+                <Error
+                    errStatusCode={403}
+                    errMessage="Не определена роль. Обратитесь к администратору для получения подробной информации"
+                />
+            )
     }
-    return <Error errStatusCode={403} errMessage="Нет доступа" />
 }
 
 export async function getServerSideProps(context) {
