@@ -3,8 +3,8 @@ import UserLoginPanel from '../components/userLoginPanel'
 
 const Header = () => {
     return (
-        <header className="flex -m-5 items-center h-32">
-            <h1 className="m-5 text-3xl">
+        <header className="flex -mx-5 items-center h-24">
+            <h1 className="mx-5 text-3xl">
                 <CustomLink href="/">PIS RoadWorks</CustomLink>
             </h1>
             <CustomLink href="/indicators" className="m-5">
