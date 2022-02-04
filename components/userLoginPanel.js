@@ -5,10 +5,6 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 
 import CustomLink from './customLink'
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 const UserLoginPanel = () => {
     const { data: session, status } = useSession()
 
