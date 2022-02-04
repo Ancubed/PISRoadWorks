@@ -11,11 +11,11 @@ export default function Account() {
 
     switch (session.user.role) {
         case 'admin':
-            return <AdminAccount />
+            return <AdminAccount user={session.user}/>
         case 'executor':
-            return <ExecutorAccount />
+            return <ExecutorAccount user={session.user}/>
         case 'customer':
-            return <CustomerAccount />
+            return <CustomerAccount user={session.user}/>
         default:
             return (
                 <Error
