@@ -1,4 +1,14 @@
-import { useState } from 'react'
+/**
+ * Строка таблицы
+ * @param {*} props - isHeader - Заголовок ли эта строка 
+ * @param {*} props - companyName - Название компании
+ * @param {*} props - total - Всего  
+ * @param {*} props - done - Выполнено 
+ * @param {*} props - inProgress - В процессе выполнения
+ * @param {*} props - expired - Просрочено 
+ * @param {*} props - grade - Оценка показателей 
+ * @returns 
+ */
 
 const Row = (props) => {
 
