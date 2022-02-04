@@ -1,9 +1,14 @@
 const ExecutorAccount = (props) => {
     return (
-        <main>
+        <div>
             <h1>Executor {props.user.name}</h1>
-        </main>
+        </div>
     )
+}
+
+export async function getServerSideProps() {
+    
+    return { props: { executors: sortedExecutors } }
 }
 
 export default ExecutorAccount

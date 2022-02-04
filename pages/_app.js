@@ -6,7 +6,7 @@ import Footer from '../components/footer'
 
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     return (
         <SessionProvider session={session}>
             <div className="px-2 md:px-40">

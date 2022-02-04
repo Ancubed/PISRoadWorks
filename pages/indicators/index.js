@@ -10,7 +10,7 @@ const matrixWeight = {
     expired: -1.5,
 }
 
-export default function Indicators({ executors }) {
+const Indicators = ({ executors }) => {
     return (
         <main>
             <h1 className="text-2xl mb-4">Показатели выполнения работ</h1>
@@ -192,3 +192,5 @@ export async function getServerSideProps() {
     const sortedExecutors = await sortByGrade(executors) // Сортировка по оценке
     return { props: { executors: sortedExecutors } }
 }
+
+export default Indicators

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-function CustomLink(props) {
+const CustomLink = (props) => {
     let { href, children, ...rest } = props;
     
     return (

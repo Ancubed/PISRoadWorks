@@ -1,8 +1,8 @@
 const CustomerAccount = (props) => {    
     return (
-        <main>
+        <div>
             <h1>Customer {props.user.name}</h1>
-        </main>
+        </div>
     )
 }
 

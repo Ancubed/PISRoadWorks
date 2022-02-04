@@ -1,31 +1,15 @@
 import { useState } from 'react'
 
-const Row = ({
-    companyName,
-    total,
-    done,
-    inProgress,
-    expired,
-    grade,
-    isHeader,
-}) => {
-    const [row, setRow] = useState({
-        companyName,
-        total,
-        done,
-        inProgress,
-        expired,
-        grade,
-    })
+const Row = (props) => {
 
     return (
-        <tr className={isHeader ? 'font-bold h-12' : 'h-10'}>
-            <td>{row.companyName}</td>
-            <td className="text-center">{row.total}</td>
-            <td className="text-center">{row.done}</td>
-            <td className="text-center">{row.inProgress}</td>
-            <td className="text-center">{row.expired}</td>
-            <td className="text-center">{row.grade}</td>
+        <tr className={props.isHeader ? 'font-bold h-12' : 'h-10'}>
+            <td>{props.companyName}</td>
+            <td className="text-center">{props.total}</td>
+            <td className="text-center">{props.done}</td>
+            <td className="text-center">{props.inProgress}</td>
+            <td className="text-center">{props.expired}</td>
+            <td className="text-center">{props.grade}</td>
         </tr>
     )
 }
