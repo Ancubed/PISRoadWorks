@@ -9,7 +9,7 @@ const accountsHandler = async (req, res) => {
     const session = await getSession({ req });
     
     if (!session || !session.user || session.user.role.id != 0) {
-        sendJson(res, 403, null, 'У вас нет доступа к данным');
+        return sendJson(res, 403, null, 'У вас нет доступа к данным');
     }
 
     await dbConnect();
