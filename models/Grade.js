@@ -3,12 +3,12 @@ import mongoose from 'mongoose'
 const GradeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Пожалуйста, передайте имя шкалы'],
+        required: [true, 'Пожалуйста, объявите имя шкалы'],
         maxlength: [30, 'Название шкалы не может быть больше 30 символов'],
     },
     value: {
         type: Number,
-        required: [true, 'Пожалуйста, передайте значение шкалы'],
+        required: [true, 'Пожалуйста, объявите значение шкалы'],
     },
 })
 

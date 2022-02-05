@@ -12,12 +12,12 @@ const Account = () => {
     if (!session || !session.user) return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const renderSwitchedAccount = () => {
-        switch (session.user.role) {
-            case 'admin':
+        switch (session.user.role.id) {
+            case 0:
                 return <AdminAccount user={session.user}/>
-            case 'customer':
+            case 1:
                 return <CustomerAccount user={session.user}/>
-            case 'executor':
+            case 2:
                 return <ExecutorAccount user={session.user}/>
             default:
                 return (

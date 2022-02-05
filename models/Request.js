@@ -3,15 +3,15 @@ import mongoose from 'mongoose'
 const RequestSchema = new mongoose.Schema({
     executorId: {
         type: mongoose.ObjectId,
-        required: [true, 'Пожалуйста, передайте id компании-исполнителя'],
+        required: [true, 'Пожалуйста, объявите id компании-исполнителя'],
     },
     customerId: {
         type: mongoose.ObjectId,
-        required: [true, 'Пожалуйста, передайте id компании-заказчика'],
+        required: [true, 'Пожалуйста, объявите id компании-заказчика'],
     },
     executorName: {
         type: String,
-        required: [true, 'Пожалуйста, передайте имя компании-исполнителя'],
+        required: [true, 'Пожалуйста, объявите имя компании-исполнителя'],
         maxlength: [
             40,
             'Имя компании-исполнителя не может быть больше 40 символов',
@@ -19,7 +19,7 @@ const RequestSchema = new mongoose.Schema({
     },
     adress: {
         type: String,
-        required: [true, 'Пожалуйста, передайте адрес проведения работ'],
+        required: [true, 'Пожалуйста, объявите адрес проведения работ'],
         maxlength: [
             256,
             'Адрес компании-исполнителя не может быть больше 256 символов',
@@ -28,7 +28,7 @@ const RequestSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['new', 'submitted', 'rejected', 'accepted'],
-        required: [true, 'Пожалуйста, передайте статус работы'],
+        required: [true, 'Пожалуйста, объявите статус работы'],
     },
     files: {
         type: [
@@ -51,11 +51,11 @@ const RequestSchema = new mongoose.Schema({
     },
     dateOfStart: {
         type: Date,
-        required: [true, 'Пожалуйста, передайте дату начала работ'],
+        required: [true, 'Пожалуйста, объявите дату начала работ'],
     },
     dateOfEnd: {
         type: Date,
-        required: [true, 'Пожалуйста, передайте дату окончания работ'],
+        required: [true, 'Пожалуйста, объявите дату окончания работ'],
     },
 })
 
