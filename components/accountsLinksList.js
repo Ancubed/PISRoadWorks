@@ -1,25 +1,25 @@
-import { useState, useEffect } from "react"
+import useSWR from 'swr'
 
-const AccountsLinksList = (props) => {
-    const [data, setData] = useState(null)
-    const [isLoading, setLoading] = useState(false)
+import AccountsLink from './accountsLink'
+import LinkButton from './linkButton'
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json()).then((json) => json.data)
+
+const AccountsLinksList = (props) => {    
+    const { data, error } = useSWR(`api/accounts`, fetcher)
   
-    useEffect(() => {
-        setLoading(true)
-        fetch('api/accounts')
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data.data)
-                setLoading(false)
-            })
-    }, [])
-  
-    if (isLoading) return <p>Загрузка...</p>
+    if (!data && !error) return <p>Загрузка...</p>
     if (!data) return <p>Нет данных</p>
   
     return (
-        <div className="">
-            {data.toString()}
+        <div className="flex grow flex-col">
+            <h3 className="text-lg mb-1">Аккаунты</h3>
+            <div>
+                {data.map((acc, key) => {
+                    return acc.id !== props.user.id ? <AccountsLink account={acc} key={key}/> : null
+                })}
+            </div>
+            <LinkButton text='Добавить' link='account/create-account'/>
         </div>
     )
 }

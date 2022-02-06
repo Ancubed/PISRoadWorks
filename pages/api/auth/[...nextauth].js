@@ -51,13 +51,15 @@ export default NextAuth({
                     _id: account.providerAccountId
                 });
                 token.company = user?.company,
-                token.role = user?.role
+                token.role = user?.role,
+                token.id = user?.id
             }
             return token
         },
         async session({ session, token, user }) {
             session?.user?.company = token?.company,
-            session?.user?.role = token?.role
+            session?.user?.role = token?.role,
+            session?.user?.id = token?.id
             //console.log(session, token);
             return session
         }
