@@ -14,7 +14,7 @@ const UserLoginPanel = () => {
                 <Menu as="div" className="relative inline-block text-left">
                     {({ open }) => (
                         <>
-                            <Menu.Button className="inline-flex justify-center w-full rounded-m px-4 py-2 bg-white text-sm font-medium text-gray-70 focus:outline-none">
+                            <Menu.Button className="inline-flex text-right w-full rounded-m px-4 py-2 bg-white text-sm font-medium text-gray-70 focus:outline-none">
                                 {session.user.name}
                                 <ChevronDownIcon
                                     className={`-mr-1 ml-2 h-5 w-5 transform duration-100 ${
