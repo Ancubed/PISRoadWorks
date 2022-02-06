@@ -1,4 +1,4 @@
-const CustomerAccount = (props) => {    
+const CustomerAccount = (props) => {
     return (
         <div>
             <h1>Customer {props.user.name}</h1>

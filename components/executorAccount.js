@@ -7,7 +7,6 @@ const ExecutorAccount = (props) => {
 }
 
 export async function getServerSideProps() {
-    
     return { props: { executors: sortedExecutors } }
 }
 

@@ -1,6 +1,6 @@
 import AccountsLinksList from './accountsLinksList'
 
-const AdminAccount = (props) => {    
+const AdminAccount = (props) => {
     return (
         <div className="py-4">
             <h2 className="text-xl mb-2">Панель управления</h2>
