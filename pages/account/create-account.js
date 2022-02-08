@@ -1,6 +1,13 @@
-import CustomForm from '../../components/customForm'
+import { useSession, getSession } from 'next-auth/react'
+import Error from '../../components/error'
+import CustomForm from '../../components/customForm.tsx'
 
 const CreateAccount = () => {
+    const { data: session } = useSession()
+
+    if (!session || !session.user)
+        return <Error errStatusCode={403} errMessage="Нет доступа" />
+
     const fields = [
         {
             type: 'select',
@@ -31,7 +38,28 @@ const CreateAccount = () => {
         {
             type: 'text',
             id: 'name',
-            labelText: 'Имя сотрудника',
+            labelText: 'ФИО сотрудника',
+            required: true,
+            value: '',
+        },
+        {
+            type: 'text',
+            id: 'email',
+            labelText: 'Email',
+            required: true,
+            value: '',
+        },
+        {
+            type: 'password',
+            id: 'password',
+            labelText: 'Пароль',
+            required: true,
+            value: '',
+        },
+        {
+            type: 'password',
+            id: 'repeatPassword',
+            labelText: 'Повторите пароль',
             required: true,
             value: '',
         },
@@ -48,6 +76,14 @@ const CreateAccount = () => {
             />
         </main>
     )
+}
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            session: await getSession(context),
+        },
+    }
 }
 
 export default CreateAccount
