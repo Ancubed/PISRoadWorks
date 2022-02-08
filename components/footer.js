@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="mt-24">
+        <footer className="mt-24 mb-6">
             Powered by
             <a
                 href="https://github.com/Ancubed"
