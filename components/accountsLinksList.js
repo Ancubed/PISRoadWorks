@@ -24,7 +24,7 @@ const AccountsLinksList = (props) => {
                     ) : null
                 })}
             </div>
-            <LinkButton text="Добавить" link="account/create-account" />
+            <LinkButton text="Добавить" link="accounts/create-account" />
         </div>
     )
 }

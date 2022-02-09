@@ -41,7 +41,7 @@ const UserLoginPanel = () => {
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <CustomLink
-                                                    href="/account"
+                                                    href="/profile"
                                                     className={`block px-4 py-2 text-sm 
                                         ${
                                             active
