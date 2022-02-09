@@ -88,7 +88,7 @@ const CustomForm = (props: CustomFormProps) => {
                 <div key={key} className="flex flex-col mb-4">
                         <label htmlFor={field.id}>{field.labelText}</label>
                         {
-                            (field.type == 'text' || field.type == 'password') 
+                            (field.type == 'text' || field.type == 'password' || field.type == 'email') 
                             &&  
                             <input
                                 className="h-8"
