@@ -123,12 +123,12 @@ const CustomForm = (props: CustomFormProps) => {
     return (
         <form 
         onSubmit={handleSubmit} 
-        className={`p-2 border-2 rounded ${error && 'border-rose-500'} ${isSuccess && 'border-green-500'}`}>
+        className={`p-4 border-2 rounded ${error && 'border-rose-500'} ${isSuccess && 'border-green-500'}`}>
             {props.fields.map((field, key) => generateField(field, key))}
             {message 
             && 
             <span 
-            className={`flex justify-center my-2 ${error && 'text-rose-500'} ${isSuccess && 'text-green-500'}`}>
+            className={`flex justify-center my-4 ${error && 'text-rose-500'} ${isSuccess && 'text-green-500'}`}>
                 {message}
             </span>}
             <button
