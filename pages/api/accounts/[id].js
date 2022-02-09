@@ -1,19 +1,46 @@
 import * as emailValidator from 'email-validator'
 import * as bcrypt from 'bcrypt'
 
-import { getSession } from 'next-auth/react'
-
 import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 import RoleModel from '../../../models/Role'
 
-import { sendJson, generateApiError, catchApiError } from '../../../lib/functions'
+import { isAdminSession, sendJson, generateApiError, catchApiError } from '../../../lib/functions'
 
 const notSuccess200Json = (res, message) => {
     return sendJson(res, 200, null, message, false);
 }
 
+const getAccount = async (req, res) => {
+
+    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+
+    const { id } = req.query;
+
+    if (!id) generateApiError('Не указан id', 400);
+
+    let acc, data = null;
+
+    try {
+        acc = await UserModel.findOne({ _id: id });
+    } catch (err) {
+        throw generateApiError('Неверно указан id', 400);
+    }
+
+    if (acc) data = {
+        id: acc._id,
+        name: acc.name,
+        company: acc.company,
+        role: acc.role.name,
+    }
+
+    return sendJson(res, 200, data);
+}
+
 const createAccount = async (req, res) => {
+
+    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
 
     let { role, company, surname, name, patronymic, email, password, repeatPassword } = req.body;
@@ -62,32 +89,33 @@ const editAccount = () => {
 
 }
 
-const createAccountHandler = async (req, res) => {
+const accountHandler = async (req, res) => {
     try {
-        const session = await getSession({ req });
 
-        if (!session || !session.user || session.user.role.id != 0) {
-            return sendJson(res, 403, null, 'У вас нет доступа к данным');
-        }
+        await dbConnect()
 
         switch(req.method) {
+            case 'GET': {
+                return await getAccount(req, res);
+            }
             case 'PUT': {
                 if (req.query.id != 'create') {
-                    res.setHeader('Allow', ['PUT', 'POST'])
+                    res.setHeader('Allow', ['GET', 'PUT', 'POST'])
                     return sendJson(res, 405, null, `Метод ${req.method} разрешен только для create`)
                 }
-                return createAccount(req, res);
+                return await createAccount(req, res);
             }
             case 'POST': {
                 return editAccount();
             }
             default:
-                res.setHeader('Allow', ['PUT', 'POST'])
+                res.setHeader('Allow', ['GET', 'PUT', 'POST'])
                 return sendJson(res, 405, null, `Метод ${req.method} не разрешен`)
         }    
+
     } catch(err) {
-       catchApiError(err, res)
+       return catchApiError(err, res)
     }
 }
 
-export default createAccountHandler
+export default accountHandler
