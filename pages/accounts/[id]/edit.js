@@ -70,7 +70,8 @@ function EditAccount(props) {
             id: 'email',
             labelText: 'Email',
             required: true,
-            value: props.account.email
+            value: props.account.email,
+            disabled: true
         },
         {
             type: 'password',
@@ -85,8 +86,6 @@ function EditAccount(props) {
             value: '',
         },
     ]
-
-    console
 
     return (
         <main>
@@ -109,7 +108,7 @@ export async function getServerSideProps(context) {
     } catch (err) {
         console.log('Неверный id');
     }
-    let name = acc.name.split(' ');
+    let name = acc?.name?.split(' ');
     if (acc) data = {
         id: acc._id.toString(),
         company: acc.company,
