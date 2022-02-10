@@ -1,3 +1,5 @@
+import LinkButton from './linkButton'
+
 const AccountInfo = (props) => {
     return (
         <div className="py-4">
@@ -7,6 +9,7 @@ const AccountInfo = (props) => {
                 <h3>Имя: {props.user.name}</h3>
                 <h3>Тип учетной записи: {props.user.role.name}</h3>
             </div>
+            <LinkButton text="Редактировать" link={`/accounts/${props.user.id}/edit`} />
         </div>
     )
 }
