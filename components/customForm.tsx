@@ -101,6 +101,7 @@ const CustomForm = (props: CustomFormProps) => {
                                 required={field.required}
                                 disabled={field.disabled}
                                 defaultValue={field.value}
+                                maxLength={64}
                             />
                         }
                         {
