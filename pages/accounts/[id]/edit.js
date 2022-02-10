@@ -8,11 +8,11 @@ import UserModel from '../../../models/User'
 function EditAccount(props) {
     const { data: session } = useSession()
 
-    if (!session || !session.user || session.user.role.id != 0 && session.user.id != props.account.id)
-        return <Error errStatusCode={403} errMessage="Нет доступа" />
-
     if (!props.account)
         return <Error errStatusCode={404} errMessage="Аккаунт не существует" />
+
+    if (!session || !session.user || session.user.role.id != 0 && session.user.id != props.account.id)
+        return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const fields = [
         {
@@ -108,13 +108,12 @@ export async function getServerSideProps(context) {
     } catch (err) {
         console.log('Неверный id');
     }
-    let name = acc?.name?.split(' ');
     if (acc) data = {
         id: acc._id.toString(),
         company: acc.company,
-        surname: name[0],
-        name: name[1],
-        patronymic: name[2] || '',
+        surname: acc.surname,
+        name: acc.name,
+        patronymic: acc.patronymic || '',
         email: acc.email,
         roleName: acc.role.name,
         roleId: acc.role.id.toString()

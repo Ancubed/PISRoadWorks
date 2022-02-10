@@ -14,7 +14,7 @@ const accountsHandler = async (req, res) => {
         let accounts = (await UserModel.find({})).map((acc) => {
             return {
                 id: acc._id,
-                name: acc.name,
+                name: `${acc.surname} ${acc.name} ${acc.patronymic}`,
                 company: acc.company,
                 role: acc.role.name,
             }

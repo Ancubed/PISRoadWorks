@@ -5,7 +5,14 @@ import dbConnect from '../../../../lib/mongoose'
 import UserModel from '../../../../models/User'
 import RoleModel from '../../../../models/Role'
 
-import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../../lib/functions'
+import { 
+    isAdminSession, 
+    isOwnerDataSession, 
+    sendJson, 
+    notSuccess200Json, 
+    generateApiError, 
+    catchApiError, 
+    trimBody } from '../../../../lib/functions'
 
 const getAccount = async (req, res) => {
 
@@ -34,7 +41,8 @@ const getAccount = async (req, res) => {
 }
 
 const editAccount = async (req, res) => {
-    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+    if (!(await isAdminSession(req)) 
+    && !(await isOwnerDataSession(req))) throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
 
@@ -53,7 +61,9 @@ const editAccount = async (req, res) => {
         || !email) return notSuccess200Json(res, 'Пожалуйста, заполните все поля');
 
     const updatingObject = {
-        name: `${surname} ${name} ${patronymic}`,
+        name: name,
+        surname: surname,
+        patronymic: patronymic,
         company: company
     }
     

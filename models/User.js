@@ -13,6 +13,15 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Пожалуйста, объявите имя пользователя'],
         maxlength: [30, 'Имя пользователя не может быть больше 30 символов'],
     },
+    surname: {
+        type: String,
+        required: [true, 'Пожалуйста, объявите фамилию пользователя'],
+        maxlength: [30, 'Фамилия пользователя не может быть больше 30 символов'],
+    },
+    patronymic: {
+        type: String,
+        maxlength: [30, 'Отчество пользователя не может быть больше 30 символов'],
+    },
     company: {
         type: String,
         required: [true, 'Пожалуйста, объявите название компании'],

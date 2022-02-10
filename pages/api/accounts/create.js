@@ -5,7 +5,7 @@ import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 import RoleModel from '../../../models/Role'
 
-import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError } from '../../../lib/functions'
+import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../lib/functions'
 
 const createAccount = async (req, res) => {
 
@@ -45,7 +45,9 @@ const createAccount = async (req, res) => {
 
     await (new UserModel({
         email: email,
-        name: `${surname} ${name} ${patronymic}`,
+        name: name,
+        surname: surname,
+        patronymic: patronymic,
         company: company,
         role: {
             id: role.id,
