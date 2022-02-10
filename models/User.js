@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Пожалуйста, объявите email пользователя'],
         maxlength: [40, 'Email пользователя не может быть больше 40 символов'],
+        unique : true
     },
     name: {
         type: String,
@@ -16,6 +17,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Пожалуйста, объявите название компании'],
         maxlength: [30, 'Название компании не может быть больше 30 символов'],
+        unique : true
     },
     role: RoleSchema,
     password: {
