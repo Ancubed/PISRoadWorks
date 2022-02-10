@@ -89,6 +89,19 @@ const editAccount = () => {
 
 }
 
+const deleteAccount = async (req, res) => {
+    
+    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+
+    const { id } = req.query;
+
+    if (!id) generateApiError('Не указан id', 400);
+
+    await UserModel.findByIdAndRemove(id)
+
+    return sendJson(res, 200);
+}
+
 const accountHandler = async (req, res) => {
     try {
 
@@ -107,6 +120,9 @@ const accountHandler = async (req, res) => {
             }
             case 'POST': {
                 return editAccount();
+            }
+            case 'DELETE': {
+                return await deleteAccount(req, res);
             }
             default:
                 res.setHeader('Allow', ['GET', 'PUT', 'POST'])

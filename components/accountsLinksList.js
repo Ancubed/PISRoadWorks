@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import { useState, useEffect } from 'react'
 
 import AccountsLink from './accountsLink'
 import LinkButton from './linkButton'
@@ -10,21 +11,30 @@ const fetcher = (...args) =>
 
 const AccountsLinksList = (props) => {
     const { data, error } = useSWR(`api/accounts`, fetcher)
+    const [accounts, setAccounts] = useState(data)
 
-    if (!data && !error) return <p>Загрузка...</p>
-    if (!data) return <p>Нет данных</p>
+    useEffect(() => { setAccounts(data); }, [data])
+
+    if (!accounts && !error) return <p>Загрузка...</p>
+    if (!accounts) return <p>Нет данных</p>
+
+    const deleteAcc = (id) => {
+        if (accounts && accounts.length != 0) {
+            setAccounts(accounts.filter(acc => acc.id != id));
+        }
+    }
 
     return (
         <div className="flex grow flex-col">
             <h3 className="text-lg mb-1">Аккаунты</h3>
             <div>
-                {data.map((acc, key) => {
+                {accounts.map((acc, key) => {
                     return acc.id !== props.user.id ? (
-                        <AccountsLink account={acc} key={key} />
+                        <AccountsLink account={acc} key={key} user={props.user} deleteAcc={deleteAcc}/>
                     ) : null
                 })}
             </div>
-            <LinkButton text="Добавить" link="accounts/create-account" />
+            <LinkButton text="Добавить" link="accounts/create" />
         </div>
     )
 }

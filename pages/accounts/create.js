@@ -2,10 +2,10 @@ import { useSession, getSession } from 'next-auth/react'
 import Error from '../../components/error'
 import CustomForm from '../../components/customForm.tsx'
 
-const CreateAccount = () => {
+const CreteAccount = (props) => {
     const { data: session } = useSession()
 
-    if (!session || !session.user)
+    if (!session || !session.user || session.user.role.id != 0)
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const fields = [
@@ -95,9 +95,9 @@ const CreateAccount = () => {
 export async function getServerSideProps(context) {
     return {
         props: {
-            session: await getSession(context)
+            session: await getSession(context),
         },
     }
 }
 
-export default CreateAccount
+export default CreteAccount
