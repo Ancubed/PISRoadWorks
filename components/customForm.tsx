@@ -6,11 +6,14 @@ interface Field {
     labelText: string,
     required: boolean,
     value?: string,
+    defaultValue?: string,
+    disabled?: boolean
 }
 
 interface Option {
     value: string,
     text: string,
+    selected?: boolean
 }
 
 interface SelectField extends Field {
@@ -96,6 +99,7 @@ const CustomForm = (props: CustomFormProps) => {
                                 id={field.id}
                                 name={field.id}
                                 required={field.required}
+                                disabled={field.disabled}
                                 defaultValue={field.value}
                             />
                         }
@@ -107,6 +111,7 @@ const CustomForm = (props: CustomFormProps) => {
                                 id={field.id}
                                 name={field.id}
                                 required={field.required}
+                                disabled={field.disabled}
                                 defaultValue={field.value || field.options[0].value}
                             >
                                 {field.options.map((option: Option, key: any) => (
