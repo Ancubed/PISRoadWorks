@@ -17,7 +17,7 @@ async function getUser(credentials) {
     return user && await bcrypt.compare(credentials.password, user.password)
         ? {
             id: user._id.toString(),
-            name: user.name,
+            name: `${user.surname} ${user.name} ${user.patronymic}`,
             email: user.email
         }
         : null;
