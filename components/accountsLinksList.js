@@ -25,7 +25,7 @@ const AccountsLinksList = (props) => {
     }
 
     return (
-        <div className="flex grow flex-col">
+        <div className="flex grow flex-col max-w-[50%]">
             <h3 className="text-lg mb-1">Аккаунты</h3>
             <div>
                 {accounts.map((acc, key) => {
