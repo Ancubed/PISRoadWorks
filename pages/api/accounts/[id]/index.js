@@ -1,7 +1,11 @@
+import * as emailValidator from 'email-validator'
+import * as bcrypt from 'bcrypt'
+
 import dbConnect from '../../../../lib/mongoose'
 import UserModel from '../../../../models/User'
+import RoleModel from '../../../../models/Role'
 
-import { isAdminSession, sendJson, generateApiError, catchApiError } from '../../../../lib/functions'
+import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../../lib/functions'
 
 const getAccount = async (req, res) => {
 
@@ -29,9 +33,40 @@ const getAccount = async (req, res) => {
     return sendJson(res, 200, data);
 }
 
-const editAccount = (req, res) => {
-    console.log(req.body, req.query.id);
-    return sendJson(res, 400)
+const editAccount = async (req, res) => {
+    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+
+    if (!req.body) throw generateApiError('Запрос с пустым body', 400);
+
+    trimBody(req);
+
+    const { id } = req.query;
+    if (!id) generateApiError('Не указан id', 400);
+
+    let { role, company, surname, name, patronymic, email, password, repeatPassword } = req.body;
+
+    if (!role 
+        || !company 
+        || !surname 
+        || !name 
+        || !patronymic 
+        || !email) return notSuccess200Json(res, 'Пожалуйста, заполните все поля');
+
+    const updatingObject = {
+        name: `${surname} ${name} ${patronymic}`,
+        company: company
+    }
+    
+    if (password) {
+        if (password !== repeatPassword)
+            return notSuccess200Json(res, 'Пароли не совпадают');
+
+        updatingObject.password = await bcrypt.hash(password, 10);
+    }
+
+    await UserModel.findByIdAndUpdate(id, updatingObject);
+
+    return sendJson(res, 200, null, 'Аккаунт успешно изменен!');
 }
 
 const deleteAccount = async (req, res) => {
@@ -39,7 +74,6 @@ const deleteAccount = async (req, res) => {
     if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
 
     const { id } = req.query;
-
     if (!id) generateApiError('Не указан id', 400);
 
     await UserModel.findByIdAndRemove(id)
