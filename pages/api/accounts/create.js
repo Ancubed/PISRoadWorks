@@ -5,17 +5,15 @@ import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 import RoleModel from '../../../models/Role'
 
-import { isAdminSession, sendJson, generateApiError, catchApiError } from '../../../lib/functions'
-
-const notSuccess200Json = (res, message) => {
-    return sendJson(res, 200, null, message, false);
-}
+import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError } from '../../../lib/functions'
 
 const createAccount = async (req, res) => {
 
     if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
+
+    trimBody(req);
 
     let { role, company, surname, name, patronymic, email, password, repeatPassword } = req.body;
 
