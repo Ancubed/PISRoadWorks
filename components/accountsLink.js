@@ -22,7 +22,7 @@ const AccountsLink = (props) => {
         <div className='p-4 border-2 rounded flex justify-between'>
             <CustomLink
                 href={`/accounts/${props.account.id}`}
-                className="flex grow flex-wrap p-1 hover:text-teal-600"
+                className="flex grow flex-col p-1 hover:text-teal-600"
             >
                 <span className="mr-4">{props.account.company}</span>
                 <span className="mr-4">{props.account.name}</span>
