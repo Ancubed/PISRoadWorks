@@ -16,9 +16,7 @@ async function getUser(credentials) {
     });
     return user && await bcrypt.compare(credentials.password, user.password)
         ? {
-            id: user._id.toString(),
-            name: `${user.surname} ${user.name} ${user.patronymic}`,
-            email: user.email
+            id: user._id.toString()
         }
         : null;
 }
@@ -46,17 +44,21 @@ export default NextAuth({
     ],
     callbacks: {
         async jwt({ token, account }) {
-            if (account) {
-                let user = await UserModel.findOne({
-                    _id: account.providerAccountId
-                });
-                token.company = user?.company,
-                token.role = user?.role,
-                token.id = user?.id
-            }
+            let user = await UserModel.findOne({
+                _id: token.sub
+            });
+            token.name = `${user?.surname} ${user?.name} ${user?.patronymic}`,
+            token.email = user?.email,
+            token.company = user?.company,
+            token.role = user?.role,
+            token.id = user?.id
+
+            //console.log(token, account, user);
             return token
         },
         async session({ session, token, user }) {
+            session?.user?.name = token?.name,
+            session?.user?.email = token?.email,
             session?.user?.company = token?.company,
             session?.user?.role = token?.role,
             session?.user?.id = token?.id
