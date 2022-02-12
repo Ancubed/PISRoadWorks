@@ -1,14 +1,17 @@
+import { getSession } from 'next-auth/react'
+
 import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 
-import { isAdminSession, sendJson, generateApiError, catchApiError } from '../../../lib/functions'
+import { isAcceptByRole, sendJson, generateApiError, catchApiError } from '../../../lib/functions'
 
 const accountsHandler = async (req, res) => {
     try {
 
         await dbConnect()
 
-        if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+        if (!isAcceptByRole(await getSession({ req }))) 
+            throw generateApiError('Доступ запрещен', 403);
 
         await dbConnect()
         let accounts = (await UserModel.find({})).map((acc) => {

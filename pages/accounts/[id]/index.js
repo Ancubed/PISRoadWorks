@@ -10,9 +10,6 @@ function Account(props) {
     if (!props.account)
         return <Error errStatusCode={404} errMessage="Аккаунт не существует"/>
 
-    //if (!session || !session.user)
-    //    return <Error errStatusCode={403} errMessage="Нет доступа" />
-
     return (
         <main>
             <h1 className="text-2xl mb-4">{props.account.company}</h1>

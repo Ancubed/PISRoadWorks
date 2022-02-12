@@ -5,13 +5,15 @@ import CustomForm from '../../../components/common/customForm'
 import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 
+import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
+
 function EditAccount(props) {
     const { data: session } = useSession()
 
     if (!props.account)
         return <Error errStatusCode={404} errMessage="Аккаунт не существует" />
 
-    if (!session || !session.user || session.user.role.id != 0 && session.user.id != props.account.id)
+    if (!isAcceptByRole(session) && !isOwnerDataSession(session, props.account.id))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const fields = [

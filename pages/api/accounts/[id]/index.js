@@ -1,12 +1,12 @@
-import * as emailValidator from 'email-validator'
 import * as bcrypt from 'bcrypt'
+
+import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../../lib/mongoose'
 import UserModel from '../../../../models/User'
-import RoleModel from '../../../../models/Role'
 
 import { 
-    isAdminSession, 
+    isAcceptByRole, 
     isOwnerDataSession, 
     sendJson, 
     notSuccess200Json, 
@@ -16,7 +16,8 @@ import {
 
 const getAccount = async (req, res) => {
 
-    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+    if (!isAcceptByRole(await getSession({ req }))) 
+        throw generateApiError('Доступ запрещен', 403);
 
     const { id } = req.query;
 
@@ -41,8 +42,11 @@ const getAccount = async (req, res) => {
 }
 
 const editAccount = async (req, res) => {
-    if (!(await isAdminSession(req)) 
-    && !(await isOwnerDataSession(req))) throw generateApiError('Доступ запрещен', 403);
+    if (!isAcceptByRole(await getSession({ req })) 
+    && !isOwnerDataSession(
+        await getSession({ req }),
+        req.query.id)) 
+            throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
 
@@ -81,7 +85,8 @@ const editAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
     
-    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+    if (!isAcceptByRole(await getSession({ req })))
+        throw generateApiError('Доступ запрещен', 403);
 
     const { id } = req.query;
     if (!id) generateApiError('Не указан id', 400);

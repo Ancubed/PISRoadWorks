@@ -1,15 +1,18 @@
 import * as emailValidator from 'email-validator'
 import * as bcrypt from 'bcrypt'
 
+import { getSession } from 'next-auth/react'
+
 import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 import RoleModel from '../../../models/Role'
 
-import { isAdminSession, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../lib/functions'
+import { isAcceptByRole, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../lib/functions'
 
 const createAccount = async (req, res) => {
 
-    if (!(await isAdminSession(req))) throw generateApiError('Доступ запрещен', 403);
+    if (!isAcceptByRole(await getSession({ req }))) 
+        throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
 

@@ -2,10 +2,12 @@ import { useSession, getSession } from 'next-auth/react'
 import Error from '../../components/common/error'
 import CustomForm from '../../components/common/customForm.tsx'
 
+import { isAcceptByRole } from '../../lib/functions'
+
 const CreateAccount = (props) => {
     const { data: session } = useSession()
 
-    if (!session || !session.user || session.user.role.id != 0)
+    if (!isAcceptByRole(session))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const fields = [

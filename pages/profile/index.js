@@ -5,10 +5,12 @@ import CustomerAccount from '../../components/accounts/customerAccount'
 import ExecutorAccount from '../../components/accounts/executorAccount'
 import AccountInfo from '../../components/accounts/accountInfo'
 
+import { isSession } from '../../lib/functions'
+
 const Account = () => {
     const { data: session } = useSession()
 
-    if (!session || !session.user)
+    if (!isSession(session))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const renderSwitchedAccount = () => {
