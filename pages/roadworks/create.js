@@ -7,7 +7,7 @@ import { isAcceptByRole } from '../../lib/functions'
 const CreateRoadworks = (props) => {
     const { data: session } = useSession()
 
-    if (!isAcceptByRole(session))
+    if (!isAcceptByRole(session, [0, 1]))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
     const fields = [

@@ -2,7 +2,6 @@ import { useSession, getSession } from 'next-auth/react'
 import Error from '../../../components/common/error'
 import CustomForm from '../../../components/common/customForm'
 
-import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 
 import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
@@ -104,7 +103,6 @@ function EditAccount(props) {
 export async function getServerSideProps(context) {
     const { id } = context.query;
     let acc, data = null;
-    await dbConnect();
     try {
         acc = await UserModel.findOne({ _id: id });
     } catch (err) {

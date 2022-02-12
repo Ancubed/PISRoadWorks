@@ -3,14 +3,13 @@ import * as bcrypt from 'bcrypt'
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import dbConnect from '../../../lib/mongoose';
 import UserModel from '../../../models/User';
 
 async function getUser(credentials) {
     if (!credentials
         || !credentials.username
         || !credentials.password) throw new Error('Email или пароль не переданы');
-    await dbConnect();
+    
     let user = await UserModel.findOne({
         email: credentials.username
     });

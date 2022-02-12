@@ -1,7 +1,6 @@
 import { useSession, getSession } from 'next-auth/react'
 import Error from '../../../components/common/error'
 
-import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'
 
 function Account(props) {
@@ -34,7 +33,6 @@ function Account(props) {
 export async function getServerSideProps(context) {
     const { id } = context.query;
     let acc, data = null;
-    await dbConnect();
     try {
         acc = await UserModel.findOne({ _id: id });
     } catch (err) {

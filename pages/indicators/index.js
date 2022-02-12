@@ -1,4 +1,3 @@
-import dbConnect from '../../lib/mongoose'
 // import UserModel from '../models/User';
 import RequestModel from '../../models/Request'
 
@@ -103,7 +102,6 @@ function checkStatusCount(executor) {
 
 async function aggregateExecutors() {
     try {
-        await dbConnect()
         result = await RequestModel.aggregate([
             {
                 $match: {

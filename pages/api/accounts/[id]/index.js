@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt'
 
 import { getSession } from 'next-auth/react'
 
-import dbConnect from '../../../../lib/mongoose'
 import UserModel from '../../../../models/User'
 
 import { 
@@ -98,8 +97,6 @@ const deleteAccount = async (req, res) => {
 
 const accountHandler = async (req, res) => {
     try {
-
-        await dbConnect()
 
         switch(req.method) {
             case 'GET': {
