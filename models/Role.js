@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
 
+import dbConnect from '../lib/mongoose'
+(async () => await dbConnect())(); 
+
 export const RoleSchema = new mongoose.Schema({
     id: {
         type: Number,

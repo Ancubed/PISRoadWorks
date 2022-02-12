@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
 
+import dbConnect from '../lib/mongoose'
+(async () => await dbConnect())(); 
+
 const GradeSchema = new mongoose.Schema({
     name: {
         type: String,

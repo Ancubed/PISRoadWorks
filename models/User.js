@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 import { RoleSchema } from './Role'
 
+import dbConnect from '../lib/mongoose'
+(async () => await dbConnect())(); 
+
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,

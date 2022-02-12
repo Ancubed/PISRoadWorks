@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
 
+import dbConnect from '../lib/mongoose'
+(async () => await dbConnect())(); 
+
 const RequestSchema = new mongoose.Schema({
     executorId: {
         type: mongoose.ObjectId,
