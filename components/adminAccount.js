@@ -1,4 +1,5 @@
 import AccountsLinksList from './accountsLinksList'
+import RoadWorksLinksList from './roadworksLinksList'
 
 const AdminAccount = (props) => {
     return (
@@ -6,10 +7,7 @@ const AdminAccount = (props) => {
             <h2 className="text-xl mb-2">Панель управления</h2>
             <div className="flex justify-between">
                 <AccountsLinksList user={props.user} />
-                <div>
-                    <h3 className="text-lg mb-1">Дорожные работы</h3>
-                    <div></div>
-                </div>
+                <RoadWorksLinksList user={props.user} />
             </div>
         </div>
     )
