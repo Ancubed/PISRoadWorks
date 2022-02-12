@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 
 import AccountsLink from './accountsLink'
 import LinkButton from '../common/linkButton'
+import LoadSpinner from '../common/loadSpinner'
 
 const fetcher = async (...args) => {
     let res = await fetch(...args)
@@ -27,7 +28,7 @@ const AccountsLinksList = (props) => {
     return (
         <div className="flex grow flex-col max-w-[50%]">
             <h3 className="text-lg mb-1">Аккаунты</h3>
-            {!accounts && !error && <p>Загрузка...</p>}
+            {!accounts && !error && <LoadSpinner />}
             {!accounts && error && <p>Нет данных</p>}
             {accounts && <div>
                 {accounts.map((acc, key) => {

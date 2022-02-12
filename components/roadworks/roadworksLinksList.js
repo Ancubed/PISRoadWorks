@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 
 import RoadworksLink from './roadworksLink'
 import LinkButton from '../common/linkButton'
+import LoadSpinner from '../common/loadSpinner'
 
 const fetcher = async (...args) => {
     let res = await fetch(...args)
@@ -27,7 +28,7 @@ const RoadworksLinksList = (props) => {
     return (
         <div className="flex grow flex-col max-w-[50%]">
             <h3 className="text-lg mb-1">Дорожные работы</h3>
-            {!roadworks && !error && <p>Загрузка...</p>}
+            {!roadworks && !error && <LoadSpinner />}
             {!roadworks && error && <p>Нет данных</p>}
             {roadworks && <div>
                 {roadworks.map((work, key) => {
@@ -38,7 +39,7 @@ const RoadworksLinksList = (props) => {
             </div>}
             {props.user.role.id == 0 
             && 
-            <LinkButton text="Добавить" link="/roadworks/create" />}
+            <LinkButton text="Добавить" link="/roadworks/create" disable={!roadworks && !error}/>}
         </div>
     )
 }
