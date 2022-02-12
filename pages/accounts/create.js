@@ -2,7 +2,7 @@ import { useSession, getSession } from 'next-auth/react'
 import Error from '../../components/error'
 import CustomForm from '../../components/customForm.tsx'
 
-const CreteAccount = (props) => {
+const CreateAccount = (props) => {
     const { data: session } = useSession()
 
     if (!session || !session.user || session.user.role.id != 0)
@@ -100,4 +100,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default CreteAccount
+export default CreateAccount
