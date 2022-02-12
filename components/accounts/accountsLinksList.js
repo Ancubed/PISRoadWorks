@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 
 import AccountsLink from './accountsLink'
-import LinkButton from './linkButton'
+import LinkButton from '../common/linkButton'
 
 const fetcher = async (...args) => {
     let res = await fetch(...args)

@@ -1,12 +1,12 @@
-import CustomLink from './customLink'
+import CustomLink from '../common/customLink'
 
-const AccountsLink = (props) => {
+const RoadworksLink = (props) => {
 
     const handleDeleteLinkClick = async (event) => {
         event.preventDefault();
 
         if(confirm('Вы уверены, что хотите удалить аккаунт?')) {
-            let response = await fetch(`/api/accounts/${props.account.id}`, {
+            let response = await fetch(`/api/roadworks/${props.account.id}`, {
                 method: 'delete',
                 headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -48,4 +48,4 @@ const AccountsLink = (props) => {
     )
 }
 
-export default AccountsLink
+export default RoadworksLink

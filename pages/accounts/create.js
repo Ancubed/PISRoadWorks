@@ -1,6 +1,6 @@
 import { useSession, getSession } from 'next-auth/react'
-import Error from '../../components/error'
-import CustomForm from '../../components/customForm.tsx'
+import Error from '../../components/common/error'
+import CustomForm from '../../components/common/customForm.tsx'
 
 const CreateAccount = (props) => {
     const { data: session } = useSession()

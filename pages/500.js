@@ -1,4 +1,4 @@
-import Error from '../components/error'
+import Error from '../components/common/error'
 
 const Custom500 = () => {
     return <Error errStatusCode={500} errMessage="Страница не найдена" />

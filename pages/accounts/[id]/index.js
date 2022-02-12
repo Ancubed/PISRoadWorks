@@ -1,5 +1,5 @@
 import { useSession, getSession } from 'next-auth/react'
-import Error from '../../../components/error'
+import Error from '../../../components/common/error'
 
 import dbConnect from '../../../lib/mongoose'
 import UserModel from '../../../models/User'

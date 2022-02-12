@@ -1,4 +1,4 @@
-import LinkButton from './linkButton'
+import LinkButton from '../common/linkButton'
 
 const AccountInfo = (props) => {
     return (

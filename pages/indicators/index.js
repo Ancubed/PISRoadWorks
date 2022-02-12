@@ -2,7 +2,7 @@ import dbConnect from '../../lib/mongoose'
 // import UserModel from '../models/User';
 import RequestModel from '../../models/Request'
 
-import Row from '../../components/row'
+import Row from '../../components/common/row'
 
 const matrixWeight = {
     done: 3,

@@ -1,8 +1,8 @@
 import { SessionProvider } from 'next-auth/react'
 
-import HeadContainer from '../components/headContainer'
-import Header from '../components/header'
-import Footer from '../components/footer'
+import HeadContainer from '../components/common/headContainer'
+import Header from '../components/common/header'
+import Footer from '../components/common/footer'
 
 import '../styles/globals.css'
 

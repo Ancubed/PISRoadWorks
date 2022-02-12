@@ -1,5 +1,5 @@
 import AccountsLinksList from './accountsLinksList'
-import RoadWorksLinksList from './roadworksLinksList'
+import RoadWorksLinksList from '../roadworks/roadworksLinksList'
 
 const AdminAccount = (props) => {
     return (

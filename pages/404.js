@@ -1,4 +1,4 @@
-import Error from '../components/error'
+import Error from '../components/common/error'
 
 const Custom404 = () => {
     return <Error errStatusCode={404} errMessage="Страница не найдена" />

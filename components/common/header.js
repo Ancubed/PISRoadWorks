@@ -1,5 +1,5 @@
-import CustomLink from '../components/customLink'
-import UserLoginPanel from '../components/userLoginPanel'
+import CustomLink from './customLink'
+import UserLoginPanel from './userLoginPanel'
 
 const Header = () => {
     return (

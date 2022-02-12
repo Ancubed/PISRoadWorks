@@ -1,9 +1,9 @@
 import { useSession, getSession } from 'next-auth/react'
-import Error from '../../components/error'
-import AdminAccount from '../../components/adminAccount'
-import CustomerAccount from '../../components/customerAccount'
-import ExecutorAccount from '../../components/executorAccount'
-import AccountInfo from '../../components/accountInfo'
+import Error from '../../components/common/error'
+import AdminAccount from '../../components/accounts/adminAccount'
+import CustomerAccount from '../../components/accounts/customerAccount'
+import ExecutorAccount from '../../components/accounts/executorAccount'
+import AccountInfo from '../../components/accounts/accountInfo'
 
 const Account = () => {
     const { data: session } = useSession()
