@@ -84,7 +84,7 @@ const CreateAccount = (props) => {
             <h1 className="text-2xl mb-4">Создать аккаунт</h1>
             <CustomForm
                 fields={fields}
-                buttonText="Добавить"
+                buttonText="Создать"
                 method="put"
                 url="/api/accounts/create"
             />
