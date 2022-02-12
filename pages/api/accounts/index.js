@@ -13,10 +13,9 @@ const accountsHandler = async (req, res) => {
             throw generateApiError('Доступ запрещен', 403);
 
         if (req.query.role) {
-            role = await RoleModel.findOne({ id: parseInt(role) });
+            let role = await RoleModel.findOne({ id: parseInt(req.query.role) });
             if (!role) return notSuccess200Json(res, 'Тип компании задан неверно');
             filterQuery['role.id'] = role.id;
-            console.log(filterQuery);
         }
 
         let accounts = (await UserModel.find(filterQuery)).map((acc) => {
