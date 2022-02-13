@@ -5,16 +5,10 @@ import AccountsLink from './accountsLink'
 import LinkButton from '../common/linkButton'
 import LoadSpinner from '../common/loadSpinner'
 
-const fetcher = async (...args) => {
-    let res = await fetch(...args)
-    if (!res.ok) throw new Error('Error');
-    let json = await res.json();
-    if (!json.data) throw new Error(json.message || 'Неизвестная ошибка');
-    return json.data;
-}
+import { fetcher } from '../../lib/functions'
 
 const AccountsLinksList = (props) => {
-    const { data, error } = useSWR(`api/accounts`, fetcher)
+    const { data, error } = useSWR(`/api/accounts`, fetcher)
     const [accounts, setAccounts] = useState(data)
 
     useEffect(() => { setAccounts(data); }, [data])

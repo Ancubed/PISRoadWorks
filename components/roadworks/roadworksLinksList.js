@@ -5,16 +5,10 @@ import RoadworksLink from './roadworksLink'
 import LinkButton from '../common/linkButton'
 import LoadSpinner from '../common/loadSpinner'
 
-const fetcher = async (...args) => {
-    let res = await fetch(...args)
-    if (!res.ok) throw new Error('Ошибка при выполнении запроса');
-    let json = await res.json();
-    if (!json.data) throw new Error(json.message || 'Неизвестная ошибка');
-    return json.data;
-}
+import { fetcher } from '../../lib/functions'
 
 const RoadworksLinksList = (props) => {
-    const { data, error } = useSWR(`api/roadworks`, fetcher)
+    const { data, error } = useSWR(`api/roadworks`, async () => (await fetcher(args)))
     const [roadworks, setRoadworks] = useState(data)
 
     useEffect(() => { setRoadworks(data); }, [data])
@@ -39,7 +33,7 @@ const RoadworksLinksList = (props) => {
             </div>}
             {props.user.role.id == 0 
             && 
-            <LinkButton text="Добавить" link="/roadworks/create" disable={!roadworks && !error}/>}
+            <LinkButton text="Добавить" link="/roadworks/create"/>}
         </div>
     )
 }
