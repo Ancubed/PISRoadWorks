@@ -2,6 +2,8 @@ import { useSession, getSession } from 'next-auth/react'
 import Error from '../../components/common/error'
 import CustomForm from '../../components/common/customForm.tsx'
 
+import UserModel from '../../models/User'
+
 import { isAcceptByRole } from '../../lib/functions'
 
 const CreateRoadworks = (props) => {
@@ -14,72 +16,38 @@ const CreateRoadworks = (props) => {
         {
             type: 'select',
             id: 'role',
-            labelText: 'Тип компании',
+            labelText: 'Исполнитель',
             required: true,
-            options: [
-                {
-                    value: '0',
-                    text: 'Администратор',
-                },
-                {
-                    value: '1',
-                    text: 'Заказчик',
-                },
-                {
-                    value: '2',
-                    text: 'Исполнитель',
-                },
-            ],
+            options: props.options
         },
         {
             type: 'text',
-            id: 'company',
-            labelText: 'Название компании',
+            id: 'adress',
+            labelText: 'Адрес',
             required: true,
         },
         {
-            type: 'text',
-            id: 'surname',
-            labelText: 'Фамилия',
+            type: 'textarea',
+            id: 'comment',
+            labelText: 'Комментарий',
+            required: false,
+            value: '',
+        },
+        {
+            type: 'date',
+            id: 'dateStart',
+            labelText: 'Дата начала работ',
             required: true,
             value: '',
         },
         {
-            type: 'text',
-            id: 'name',
-            labelText: 'Имя',
+            type: 'date',
+            id: 'dateEnd',
+            labelText: 'Дата окончания работ',
             required: true,
             value: '',
-        },
-        {
-            type: 'text',
-            id: 'patronymic',
-            labelText: 'Отчество',
-            required: true,
-            value: '',
-        },
-        {
-            type: 'email',
-            id: 'email',
-            labelText: 'Email',
-            required: true,
-            value: '',
-        },
-        {
-            type: 'password',
-            id: 'password',
-            labelText: 'Пароль',
-            required: true,
-            value: '',
-        },
-        {
-            type: 'password',
-            id: 'repeatPassword',
-            labelText: 'Повторите пароль',
-            required: true,
-            value: '',
-        },
-    ]
+        }
+    ];
 
     return (
         <main>
@@ -95,9 +63,17 @@ const CreateRoadworks = (props) => {
 }
 
 export async function getServerSideProps(context) {
+    let options = (await UserModel.find({ "role.id": 2 })).map((acc) => {
+        return {
+            value: acc._id.toString(),
+            text: `${acc.company} - ${acc.surname} ${acc.name} ${acc.patronymic}`
+        }
+    });
+
     return {
         props: {
             session: await getSession(context),
+            options: options
         },
     }
 }
