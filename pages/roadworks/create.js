@@ -14,8 +14,14 @@ const CreateRoadworks = (props) => {
 
     const fields = [
         {
+            type: 'coordinates',
+            id: 'coordinates',
+            labelText: 'Карта',
+            required: false
+        },
+        {
             type: 'select',
-            id: 'role',
+            id: 'executorId',
             labelText: 'Исполнитель',
             required: true,
             options: props.options
@@ -27,24 +33,26 @@ const CreateRoadworks = (props) => {
             required: true,
         },
         {
-            type: 'textarea',
-            id: 'comment',
-            labelText: 'Комментарий',
-            required: false,
-            value: '',
-        },
-        {
             type: 'date',
             id: 'dateStart',
             labelText: 'Дата начала работ',
             required: true,
             value: '',
+            min: new Date().toISOString().split("T")[0]
         },
         {
             type: 'date',
             id: 'dateEnd',
             labelText: 'Дата окончания работ',
             required: true,
+            value: '',
+            min: new Date().toISOString().split("T")[0]
+        },
+        {
+            type: 'textarea',
+            id: 'comment',
+            labelText: 'Комментарий',
+            required: false,
             value: '',
         }
     ];

@@ -11,6 +11,7 @@
     "dependencies": {
         "@headlessui/react": "^1.4.3",
         "@heroicons/react": "^1.0.5",
+        "@types/yandex-maps": "^2.1.20",
         "bcrypt": "^5.0.1",
         "email-validator": "^2.0.4",
         "install": "^0.13.0",
@@ -20,6 +21,7 @@
         "npm": "^8.3.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
+        "react-yandex-maps": "^4.6.0",
         "swr": "^1.2.1"
     },
     "devDependencies": {

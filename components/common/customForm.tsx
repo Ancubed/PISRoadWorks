@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { YMaps, Map, Polyline, Button, MapState } from 'react-yandex-maps';
+import { IEvent, Polyline as tPolyline } from "yandex-maps";
 
 interface Field {
     type: string,
@@ -7,23 +9,18 @@ interface Field {
     required: boolean,
     value?: string,
     defaultValue?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    options?: [Option]
+    min?: string
 }
 
 interface Option {
     value: string,
-    text: string,
-    selected?: boolean
+    text: string
 }
-
-interface SelectField extends Field {
-    options: [Option]
-}
-
-type AnyField = Field | SelectField;
 
 interface CustomFormProps {
-    fields: AnyField[],
+    fields: Field[],
     buttonText: string,
     method: string // Заменить на enum
     url: string
@@ -38,6 +35,41 @@ const CustomForm = (props: CustomFormProps) => {
     const [error, setError] = useState(false)
     const [isSuccess, setSuccess] = useState(false)
     const [message, setMessage] = useState(false)
+    const [editable, setEditable] = useState(false)
+    const [coords, setCoords] = useState<number[][]>([])
+    const mapRef = useRef<Map<HTMLElement, MapState>>(null);
+    const polylineRef = useRef<typeof tPolyline>(null);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    function getInitialCoords(e: IEvent) {
+        let pointerCoords = e.get('coords');
+        setCoords([pointerCoords]);
+        mapRef?.current?.events?.remove('click', getInitialCoords)
+    }
+
+    function coordsStateSync(e: IEvent) {
+        setCoords(e.originalEvent?.target?.geometry?._coordPath?._coordinates);
+    }
+    
+    useEffect(() => { 
+        //console.log(editable, mapRef.currentMap.events)
+        let currentMap = mapRef?.current; 
+        let currentPolyline = polylineRef?.current; 
+        let cursor: string | undefined;
+        if (editable && currentMap && currentPolyline) {
+            if (!coords || coords.length == 0) currentMap.events?.add('click', getInitialCoords);
+            cursor = currentMap.cursors.push('pointer');
+            currentPolyline.editor?.startEditing();
+            currentPolyline.events?.add('geometrychange', coordsStateSync);
+        }
+
+        return () => {
+            if (editable && currentMap && currentPolyline) {
+                if (cursor) cursor.remove();
+                currentPolyline.editor?.stopEditing();
+            }
+        }
+    }, [editable, coords, mapRef, getInitialCoords]);
 
     if (!props.fields) throw new Error('Не передан props fields')
 
@@ -52,10 +84,13 @@ const CustomForm = (props: CustomFormProps) => {
             const data: Data = {};
 
             completedFields.forEach((field) => {
+                console.log(field)
                 let name = (field as HTMLInputElement).name;
                 let value = (field as HTMLInputElement).value;
                 if (name) data[name] = value;
             })
+
+            console.log(data);
 
             const JSONdata = JSON.stringify(data);
             const response = await fetch(props.url, {
@@ -76,14 +111,14 @@ const CustomForm = (props: CustomFormProps) => {
             setError(false);
             setSuccess(true);
             setMessage(json.message || '');
-        } catch(err) {
+        } catch(err: any) {
             setSuccess(false);
             setError(true);
             setMessage(err.message);
         }
     }
 
-    const generateField = (field: AnyField, key: any) => {
+    const generateField = (field: Field, key: any) => {
         if (!field.type || !field.id || !field.labelText)
             throw new Error('Не задан type, id или labelText')
 
@@ -115,12 +150,82 @@ const CustomForm = (props: CustomFormProps) => {
                                 disabled={field.disabled}
                                 defaultValue={field.value || field.options[0].value}
                             >
-                                {field.options.map((option: Option, key: any) => (
+                                {field.options?.map((option: Option, key: any) => (
                                     <option value={option.value} key={key}>
                                         {option.text}
                                     </option>
                                 ))}
                             </select>
+                        }
+                        {
+                            (field.type == 'date') 
+                            &&  
+                            <input
+                                className="h-8"
+                                type={field.type}
+                                id={field.id}
+                                name={field.id}
+                                required={field.required}
+                                disabled={field.disabled}
+                                defaultValue={field.value}
+                                min={field.min}
+                            />
+                        }
+                        {
+                            (field.type == 'textarea') 
+                            &&  
+                            <textarea
+                                className="h-24"
+                                id={field.id}
+                                name={field.id}
+                                required={field.required}
+                                disabled={field.disabled}
+                                defaultValue={field.value}
+                                maxLength={512}
+                            />
+                        }
+                        {
+                            (field.type == 'coordinates') 
+                            && 
+                            <div>
+                                <YMaps>
+                                    <Map
+                                        defaultState={{
+                                            center: [51.786, 55.104],
+                                            zoom: 11,
+                                            autoFitToViewport: 'always'
+                                        }}
+                                        className='w-full h-80'
+                                        instanceRef={mapRef}
+                                    >
+                                    <Button
+                                        options={{ maxWidth: 128 }}
+                                        data={{ content: 'Рисовать' }}
+                                        defaultState={{ selected: false }}
+                                        onPress={() => setEditable(!editable)}
+                                    />
+                                    <Polyline
+                                        modules={["geoObject.addon.editor"]}
+                                        geometry={coords}
+                                        options={{
+                                            balloonCloseButton: false,
+                                            strokeColor: '#000',
+                                            strokeWidth: 4,
+                                            strokeOpacity: 0.5,
+                                            draggable: editable
+                                        }}
+                                        instanceRef={polylineRef}
+                                    />
+                                    </Map>
+                                </YMaps>
+                                <input
+                                    className="hidden"
+                                    id={field.id}
+                                    name={field.id}
+                                    required={field.required}
+                                    defaultValue={JSON.stringify(coords)}
+                                />
+                            </div> 
                         }
                 </div>
             )
