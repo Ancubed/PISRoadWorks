@@ -2,7 +2,7 @@ import { REQUEST_STATUS_ENUM } from '../../../lib/constants'
 
 import RequestModel from '../../../models/Request'
 
-import { sendJson, notSuccess200Json, catchApiError } from '../../../lib/functions'
+import { sendJson, notSuccess200Json, catchApiError, dateFormatFromISO } from '../../../lib/functions'
 
 const roadworksHandler = async (req, res) => {
     try {
@@ -21,8 +21,8 @@ const roadworksHandler = async (req, res) => {
                 executorName: work.executorName,
                 status: work.status,
                 adress: work.adress,
-                dateStart: work.dateOfStart,
-                dateEnd: work.dateOfEnd
+                dateStart: dateFormatFromISO(work.dateOfStart?.toISOString()),
+                dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString())
             }
         })
 

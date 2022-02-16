@@ -1,8 +1,6 @@
-import * as bcrypt from 'bcrypt'
-
 import { getSession } from 'next-auth/react'
 
-import UserModel from '../../../../models/User'
+import RequestModel from '../../../../models/Request'
 
 import { 
     isAcceptByRole, 
@@ -11,36 +9,40 @@ import {
     notSuccess200Json, 
     generateApiError, 
     catchApiError, 
-    trimBody } from '../../../../lib/functions'
+    trimBody,
+    dateFormatFromISO } from '../../../../lib/functions'
 
-const getAccount = async (req, res) => {
+const getRoadwork = async (req, res) => {
 
-    if (!isAcceptByRole(await getSession({ req }))) 
-        throw generateApiError('Доступ запрещен', 403);
+    // if (!isAcceptByRole(await getSession({ req }))) 
+    //     throw generateApiError('Доступ запрещен', 403);
 
     const { id } = req.query;
 
     if (!id) generateApiError('Не указан id', 400);
 
-    let acc, data = null;
+    let work, data = null;
 
     try {
-        acc = await UserModel.findOne({ _id: id });
+        work = await RequestModel.findOne({ _id: id });
     } catch (err) {
         throw generateApiError('Неверно указан id', 400);
     }
 
-    if (acc) data = {
-        id: acc._id,
-        name: acc.name,
-        company: acc.company,
-        role: acc.role.name,
+    if (work) data = {
+        id: work._id,
+        executorId: work.executorId,
+        executorName: work.executorName,
+        status: work.status,
+        adress: work.adress,
+        dateStart: dateFormatFromISO(work.dateOfStart?.toISOString()),
+        dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString())
     }
 
     return sendJson(res, 200, data);
 }
 
-const editAccount = async (req, res) => {
+const editRoadwork = async (req, res) => {
     if (!isAcceptByRole(await getSession({ req })) 
     && !isOwnerDataSession(
         await getSession({ req }),
@@ -82,7 +84,7 @@ const editAccount = async (req, res) => {
     return sendJson(res, 200, null, 'Аккаунт успешно изменен!');
 }
 
-const deleteAccount = async (req, res) => {
+const deleteRoadwork = async (req, res) => {
     
     if (!isAcceptByRole(await getSession({ req })))
         throw generateApiError('Доступ запрещен', 403);
@@ -95,18 +97,18 @@ const deleteAccount = async (req, res) => {
     return sendJson(res, 200);
 }
 
-const accountHandler = async (req, res) => {
+const roadworksHandler = async (req, res) => {
     try {
 
         switch(req.method) {
             case 'GET': {
-                return await getAccount(req, res);
+                return await getRoadwork(req, res);
             }
             case 'POST': {
-                return editAccount(req, res);
+                return editRoadwork(req, res);
             }
             case 'DELETE': {
-                return await deleteAccount(req, res);
+                return await deleteRoadwork(req, res);
             }
             default:
                 res.setHeader('Allow', ['GET', 'POST', 'DELETE'])
@@ -118,4 +120,4 @@ const accountHandler = async (req, res) => {
     }
 }
 
-export default accountHandler
+export default roadworksHandler
