@@ -8,7 +8,7 @@ import LoadSpinner from '../common/loadSpinner'
 import { fetcher } from '../../lib/functions'
 
 const RoadworksLinksList = (props) => {
-    const { data, error } = useSWR(`api/roadworks`, async () => (await fetcher(args)))
+    const { data, error } = useSWR(`/api/roadworks`, fetcher)
     const [roadworks, setRoadworks] = useState(data)
 
     useEffect(() => { setRoadworks(data); }, [data])

@@ -6,7 +6,7 @@ const RoadworksLink = (props) => {
         event.preventDefault();
 
         if(confirm('Вы уверены, что хотите удалить аккаунт?')) {
-            let response = await fetch(`/api/roadworks/${props.account.id}`, {
+            let response = await fetch(`/api/roadworks/${props.work.id}`, {
                 method: 'delete',
                 headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -21,18 +21,19 @@ const RoadworksLink = (props) => {
     return (
         <div className='p-4 border-2 rounded flex justify-between'>
             <CustomLink
-                href={`/accounts/${props.account.id}`}
+                href={`/roadworks/${props.work.id}`}
                 className="flex grow flex-col p-1 hover:text-teal-600"
             >
-                <span className="mr-4">{props.account.company}</span>
-                <span className="mr-4">{props.account.name}</span>
-                <span className="mr-4">{props.account.role}</span>
+                <span className="mr-4">{props.work.adress}</span>
+                <span className="mr-4">{props.work.executorName}</span>
+                <span className="mr-4">{props.work.dateStart}</span>
+                <span className="mr-4">{props.work.dateEnd}</span>
             </CustomLink>
             {props.user.role.id == 0 
             &&
             <div>
                 <CustomLink
-                    href={`/accounts/${props.account.id}/edit`}
+                    href={`/roadworks/${props.work.id}/edit`}
                     className="p-1 hover:text-teal-600"
                 >
                     <span>Р.</span>
