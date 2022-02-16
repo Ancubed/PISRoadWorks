@@ -54,7 +54,7 @@ const createRoadworks = async (req, res) => {
         coordinates: coordinates,
         dateOfSubmission: new Date(),
         dateOfStart: dateStart,
-        dateOfEnd: dateStart
+        dateOfEnd: dateEnd
     })).save();
 
     return sendJson(res, 200, null, 'Заявка на проведение работ успешно создана!');
