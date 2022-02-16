@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+import { REQUEST_STATUS_ENUM } from '../lib/constants' 
+
 import dbConnect from '../lib/mongoose'
 (async () => await dbConnect())(); 
 
@@ -30,7 +32,7 @@ const RequestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'submitted', 'rejected', 'accepted'],
+        enum: REQUEST_STATUS_ENUM,
         required: [true, 'Пожалуйста, объявите статус работы'],
     },
     files: {
