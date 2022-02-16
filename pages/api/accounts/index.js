@@ -18,7 +18,7 @@ const accountsHandler = async (req, res) => {
             filterQuery['role.id'] = role.id;
         }
 
-        let accounts = (await UserModel.find(filterQuery)).map((acc) => {
+        let accounts = (await UserModel.find(filterQuery).sort('company')).map((acc) => {
             return {
                 id: acc._id,
                 name: `${acc.surname} ${acc.name} ${acc.patronymic}`,
