@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { YMaps, Map, Polyline, Button, MapState } from 'react-yandex-maps';
-import { IEvent, Polyline as tPolyline } from "yandex-maps";
+import { IEvent, GeoObject, ILineStringGeometry, Map as IMap, util,  } from "yandex-maps";
 
 interface Field {
     type: string,
@@ -37,8 +37,8 @@ const CustomForm = (props: CustomFormProps) => {
     const [message, setMessage] = useState(false)
     const [editable, setEditable] = useState(false)
     const [coords, setCoords] = useState<number[][]>([])
-    const mapRef = useRef<Map<HTMLElement, MapState>>(null);
-    const polylineRef = useRef<typeof tPolyline>(null);
+    const mapRef = useRef<IMap>(null);
+    const polylineRef = useRef<GeoObject<ILineStringGeometry>>(null);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function getInitialCoords(e: IEvent) {
@@ -47,15 +47,17 @@ const CustomForm = (props: CustomFormProps) => {
         mapRef?.current?.events?.remove('click', getInitialCoords)
     }
 
-    function coordsStateSync(e: IEvent) {
-        setCoords(e.originalEvent?.target?.geometry?._coordPath?._coordinates);
+    function coordsStateSync(e:IEvent) {
+        setCoords(e.originalEvent?.target?.geometry?._coordPath?._coordinates || [[0, 0]]);
     }
+
+    if (!props.fields) throw new Error('Не передан props fields')
     
     useEffect(() => { 
         //console.log(editable, mapRef.currentMap.events)
         let currentMap = mapRef?.current; 
         let currentPolyline = polylineRef?.current; 
-        let cursor: string | undefined;
+        let cursor: util.cursor.Accessor;
         if (editable && currentMap && currentPolyline) {
             if (!coords || coords.length == 0) currentMap.events?.add('click', getInitialCoords);
             cursor = currentMap.cursors.push('pointer');
@@ -70,8 +72,6 @@ const CustomForm = (props: CustomFormProps) => {
             }
         }
     }, [editable, coords, mapRef, getInitialCoords]);
-
-    if (!props.fields) throw new Error('Не передан props fields')
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
@@ -212,6 +212,7 @@ const CustomForm = (props: CustomFormProps) => {
                                             strokeColor: '#000',
                                             strokeWidth: 4,
                                             strokeOpacity: 0.5,
+                                            editorMaxPoints: 10,
                                             draggable: editable
                                         }}
                                         instanceRef={polylineRef}
