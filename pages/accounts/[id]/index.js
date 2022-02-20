@@ -15,15 +15,15 @@ function Account(props) {
             <div className="">
                 <div className="my-2">
                     <h2 className="text-xl">Тип аккаунта</h2>
-                    <span>{props.account.roleName}</span>
+                    <span className="text-lg">{props.account.roleName}</span>
                 </div>
                 <div className="my-2">
                     <h2 className="text-xl">Руководитель</h2>
-                    <span>{`${props.account.surname} ${props.account.name} ${props.account.patronymic}`}</span>
+                    <span className="text-lg">{`${props.account.surname} ${props.account.name} ${props.account.patronymic}`}</span>
                 </div>
                 <div className="my-2">
                     <h2 className="text-xl">Email</h2>
-                    <span>{props.account.email}</span>
+                    <span className="text-lg">{props.account.email}</span>
                 </div>
             </div>
         </main>
