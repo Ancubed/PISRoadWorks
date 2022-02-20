@@ -15,7 +15,7 @@ const RoadworksLinksList = (props) => {
 
     const deleteWork = (id) => {
         if (roadworks && roadworks.length != 0) {
-            setAccounts(roadworks.filter(work => work.id != id));
+            setRoadworks(roadworks.filter(work => work.id != id));
         }
     }
 

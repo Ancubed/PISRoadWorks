@@ -13,7 +13,7 @@ const RoadworksLink = (props) => {
                 }
             });
             if (response.ok) {
-                props.deleteAcc(props.account.id);
+                props.deleteWork(props.work.id);
             }
         }
     }
