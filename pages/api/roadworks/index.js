@@ -13,6 +13,9 @@ const roadworksHandler = async (req, res) => {
             if (!status) return notSuccess200Json(res, 'Статус заявки указан неверно');
             filterQuery['status'] = status;
         }
+
+        if (req.query.executor) filterQuery['executorId'] = req.query.executor;
+
         let roadworks = (await RequestModel.find(filterQuery).sort('-dateOfStart').exec()).map((work) => {
             return {
                 id: work._id,
