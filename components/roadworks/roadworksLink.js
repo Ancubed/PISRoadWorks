@@ -5,7 +5,7 @@ const RoadworksLink = (props) => {
     const handleDeleteLinkClick = async (event) => {
         event.preventDefault();
 
-        if(confirm('Вы уверены, что хотите удалить аккаунт?')) {
+        if(confirm('Вы уверены, что хотите удалить работу?')) {
             let response = await fetch(`/api/roadworks/${props.work.id}`, {
                 method: 'delete',
                 headers: {
