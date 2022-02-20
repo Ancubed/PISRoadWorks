@@ -12,6 +12,7 @@ interface Field {
     disabled?: boolean,
     options?: [Option]
     min?: string
+    coords?: number[][]
 }
 
 interface Option {
@@ -24,6 +25,7 @@ interface CustomFormProps {
     buttonText: string,
     method: string // Заменить на enum
     url: string
+    disableButton?: boolean
 }
 
 interface Data {
@@ -36,7 +38,7 @@ const CustomForm = (props: CustomFormProps) => {
     const [isSuccess, setSuccess] = useState(false)
     const [message, setMessage] = useState(false)
     const [editable, setEditable] = useState(false)
-    const [coords, setCoords] = useState<number[][]>([])
+    const [coords, setCoords] = useState<number[][]>(props.fields?.find(field => field.coords)?.coords || [])
     const mapRef = useRef<IMap>(null);
     const polylineRef = useRef<GeoObject<ILineStringGeometry>>(null);
 
@@ -244,6 +246,7 @@ const CustomForm = (props: CustomFormProps) => {
                 {message}
             </span>}
             <button
+                disabled={props.disableButton}
                 type="submit"
                 className="flex grow w-full justify-center p-2 rounded border-2"
             >
