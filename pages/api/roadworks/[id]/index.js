@@ -1,6 +1,7 @@
 import { getSession } from 'next-auth/react'
 
 import RequestModel from '../../../../models/Request'
+import UserModel from '../../../../models/User'
 
 import { 
     isAcceptByRole, 
@@ -43,11 +44,9 @@ const getRoadwork = async (req, res) => {
 }
 
 const editRoadwork = async (req, res) => {
-    if (!isAcceptByRole(await getSession({ req })) 
-    && !isOwnerDataSession(
-        await getSession({ req }),
-        req.query.id)) 
-            throw generateApiError('Доступ запрещен', 403);
+    const session = await getSession({ req });
+    if (!isAcceptByRole(session)) 
+        throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
 
@@ -56,30 +55,52 @@ const editRoadwork = async (req, res) => {
     const { id } = req.query;
     if (!id) generateApiError('Не указан id', 400);
 
-    let { role, company, surname, name, patronymic, email, password, repeatPassword } = req.body;
+    let { coordinates, executorId, adress, dateStart, dateEnd, comment } = req.body;
 
-    if (!role 
-        || !company 
-        || !surname 
-        || !name 
-        || !patronymic 
-        || !email) return notSuccess200Json(res, 'Пожалуйста, заполните все поля');
+    if (!coordinates 
+        || !executorId 
+        || !adress 
+        || !dateStart 
+        || !dateEnd) return notSuccess200Json(res, 'Пожалуйста, заполните все поля');
 
-    const updatingObject = {
-        name: name,
-        surname: surname,
-        patronymic: patronymic,
-        company: company
-    }
+    let request = await RequestModel.findById(id);
+
+    if (!isOwnerDataSession(
+        session,
+        request.customerId)) 
+            throw generateApiError('Доступ запрещен', 403);
+
+    if (request.status === 'accepted') return notSuccess200Json(res, 'Нельзя изменять принятые заявки');
     
-    if (password) {
-        if (password !== repeatPassword)
-            return notSuccess200Json(res, 'Пароли не совпадают');
+    let executor = await UserModel.findById(executorId);
 
-        updatingObject.password = await bcrypt.hash(password, 10);
-    }
+    if (!executor)
+        return notSuccess200Json(res, 'Такого исполнителя не существует');
 
-    await UserModel.findByIdAndUpdate(id, updatingObject);
+    coordinates = JSON.parse(coordinates);
+
+    if (!coordinates || coordinates.length == 0)
+        return notSuccess200Json(res, 'Координаты проведения работ не указаны или указаны неверно');
+
+    dateStart = Date.parse(dateStart);
+    dateEnd = Date.parse(dateEnd);
+
+    if (!dateStart || !dateEnd || isNaN(dateStart) || isNaN(dateEnd))
+        return notSuccess200Json(res, 'Неверный формат даты');
+
+    if (dateStart > dateEnd)
+        return notSuccess200Json(res, 'Дата окончания проведения работы должна быть позже даты начала');
+
+    request.executorId = executor.id;
+    request.executorName = executor.company;
+    request.coordinates = coordinates;
+    request.adress = adress;
+    request.comment = comment;
+    request.status = 'new';
+    request.dateOfStart = dateStart;
+    request.dateOfEnd = dateEnd;
+
+    await request.save();
 
     return sendJson(res, 200, null, 'Аккаунт успешно изменен!');
 }
@@ -92,7 +113,7 @@ const deleteRoadwork = async (req, res) => {
     const { id } = req.query;
     if (!id) generateApiError('Не указан id', 400);
 
-    await UserModel.findByIdAndRemove(id)
+    await RequestModel.findByIdAndRemove(id)
 
     return sendJson(res, 200);
 }
