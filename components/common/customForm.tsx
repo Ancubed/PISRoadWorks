@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { YMaps, Map, Polyline, Button, MapState } from 'react-yandex-maps';
+import { YMaps, Map, Polyline, Button } from 'react-yandex-maps';
 import { IEvent, GeoObject, ILineStringGeometry, Map as IMap, util,  } from "yandex-maps";
 
 interface Field {
