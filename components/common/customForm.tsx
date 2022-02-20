@@ -226,7 +226,8 @@ const CustomForm = (props: CustomFormProps) => {
                                     id={field.id}
                                     name={field.id}
                                     required={field.required}
-                                    defaultValue={JSON.stringify(coords)}
+                                    value={JSON.stringify(coords)}
+                                    readOnly
                                 />
                             </div> 
                         }
