@@ -11,7 +11,7 @@ const UserLoginPanel = () => {
     return (
         <div className="ml-auto">
             {status === 'authenticated' ? (
-                <Menu as="div" className="relative inline-block text-left">
+                <Menu as="div" className="relative inline-block text-left z-10">
                     {({ open }) => (
                         <>
                             <Menu.Button className="inline-flex text-right w-full rounded-m px-4 py-2 bg-white text-sm font-medium text-gray-70 focus:outline-none">
