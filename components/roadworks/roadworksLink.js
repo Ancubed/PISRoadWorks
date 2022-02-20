@@ -28,7 +28,7 @@ const RoadworksLink = (props) => {
                 <span className="mr-4">{props.work.executorName}</span>
                 <span className="mr-4">{`${props.work.dateStart} - ${props.work.dateEnd}`}</span>
             </CustomLink>
-            {props.user.role.id == 0 
+            {props.user?.role?.id == 0 
             &&
             <div>
                 <CustomLink

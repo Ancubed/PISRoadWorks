@@ -4,10 +4,10 @@ import RoadWorksLinksList from '../roadworks/roadworksLinksList'
 const AdminAccount = (props) => {
     return (
         <div className="py-4">
-            <h2 className="text-xl mb-2">Панель управления</h2>
-            <div className="flex justify-between">
-                <AccountsLinksList user={props.user} />
-                <RoadWorksLinksList user={props.user} />
+            <h1 className="text-2xl mb-2">Панель управления</h1>
+            <div className="flex justify-between flex-col lg:flex-row">
+                <AccountsLinksList user={props.user} className='mb-8 lg:mb-0 lg:basis-1/2'/>
+                <RoadWorksLinksList user={props.user} className='lg:basis-1/2'/>
             </div>
         </div>
     )

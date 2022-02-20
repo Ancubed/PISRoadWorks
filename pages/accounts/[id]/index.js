@@ -1,6 +1,8 @@
 import { useSession, getSession } from 'next-auth/react'
 import Error from '../../../components/common/error'
 
+import RoadWorksLinksList from '../../../components/roadworks/roadworksLinksList'
+
 import UserModel from '../../../models/User'
 
 function Account(props) {
@@ -12,19 +14,22 @@ function Account(props) {
     return (
         <main>
             <h1 className="text-2xl mb-4">{props.account.company}</h1>
-            <div className="">
-                <div className="my-2">
-                    <h2 className="text-xl">Тип аккаунта</h2>
-                    <span className="text-lg">{props.account.roleName}</span>
-                </div>
-                <div className="my-2">
-                    <h2 className="text-xl">Руководитель</h2>
-                    <span className="text-lg">{`${props.account.surname} ${props.account.name} ${props.account.patronymic}`}</span>
-                </div>
-                <div className="my-2">
-                    <h2 className="text-xl">Email</h2>
-                    <span className="text-lg">{props.account.email}</span>
-                </div>
+            <div className='flex flex-wrap lg:flex-nowrap'>
+                <div className="mr-2 flex flex-col basis-1/2 grow lg:grow-0 mb-4 lg:mb-0 ">
+                    <div className="my-2">
+                        <h2 className="text-xl">Тип аккаунта</h2>
+                        <span className="text-lg">{props.account.roleName}</span>
+                    </div>
+                    <div className="my-2">
+                        <h2 className="text-xl">Руководитель</h2>
+                        <span className="text-lg">{`${props.account.surname} ${props.account.name} ${props.account.patronymic}`}</span>
+                    </div>
+                    <div className="my-2">
+                        <h2 className="text-xl">Email</h2>
+                        <span className="text-lg">{props.account.email}</span>
+                    </div>
+                </div> 
+                <RoadWorksLinksList executor={props.account.id} className='basis-1/2'/>
             </div>
         </main>
     )

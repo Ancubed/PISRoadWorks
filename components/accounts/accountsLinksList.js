@@ -20,10 +20,10 @@ const AccountsLinksList = (props) => {
     }
 
     return (
-        <div className="flex grow flex-col max-w-[50%]">
-            <h3 className="text-lg mb-1">Аккаунты</h3>
+        <div className={`flex grow flex-col ${props.className}`}>
+            <h2 className="text-xl mb-1">Аккаунты</h2>
             {!accounts && !error && <LoadSpinner />}
-            {!accounts && error && <p>Нет данных</p>}
+            {!accounts && error || accounts?.length == 0 && !error && <p>Нет данных</p>}
             {accounts && <div>
                 {accounts.map((acc, key) => {
                     return acc.id !== props.user.id ? (
@@ -31,7 +31,7 @@ const AccountsLinksList = (props) => {
                     ) : null
                 })}
             </div>}
-            {props.user.role.id == 0 
+            {props.user?.role?.id == 0 
             && 
             <LinkButton text="Добавить" link="/accounts/create" />}
         </div>

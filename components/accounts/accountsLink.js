@@ -28,7 +28,7 @@ const AccountsLink = (props) => {
                 <span className="mr-4">{props.account.name}</span>
                 <span className="mr-4">{props.account.role}</span>
             </CustomLink>
-            {props.user.role.id == 0 
+            {props.user?.role?.id == 0 
             &&
             <div>
                 <CustomLink
