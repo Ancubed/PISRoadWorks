@@ -13,36 +13,39 @@ const Indicators = ({ executors }) => {
     return (
         <main>
             <h1 className="text-2xl mb-4">Показатели выполнения работ</h1>
-            <table className="w-full">
-                <tbody>
-                    <Row
-                        companyName="Название"
-                        total="Всего"
-                        done="Выполнено"
-                        inProgress="Выполняется"
-                        expired="Просрочено"
-                        grade="Оценка"
-                        isHeader={true}
-                    ></Row>
-                    {executors.map((executor, key) => (
+            {executors && executors.length > 0 ? 
+                <table className="w-full">
+                    <tbody>
                         <Row
-                            companyName={
-                                executor.companyName || 'Скрытая компания'
-                            }
-                            total={
-                                executor.done +
-                                    executor.inProgress +
-                                    executor.expired || 0
-                            }
-                            done={executor.done || 0}
-                            inProgress={executor.inProgress || 0}
-                            expired={executor.expired || 0}
-                            grade={executor.grade || 0}
-                            key={key}
+                            companyName="Название"
+                            total="Всего"
+                            done="Выполнено"
+                            inProgress="Выполняется"
+                            expired="Просрочено"
+                            grade="Оценка"
+                            isHeader={true}
                         ></Row>
-                    ))}
-                </tbody>
-            </table>
+                        {executors.map((executor, key) => (
+                            <Row
+                                companyName={
+                                    executor.companyName || 'Скрытая компания'
+                                }
+                                total={
+                                    executor.done +
+                                        executor.inProgress +
+                                        executor.expired || 0
+                                }
+                                done={executor.done || 0}
+                                inProgress={executor.inProgress || 0}
+                                expired={executor.expired || 0}
+                                grade={executor.grade || 0}
+                                key={key}
+                            ></Row>
+                        ))}
+                    </tbody>
+                </table>
+            : <h2 className='text-xl mb-4'>Выполняющихся или выполненных работ пока нет</h2>
+            }
         </main>
     )
 }
@@ -144,7 +147,7 @@ async function aggregateExecutors() {
             delete executor._id
             delete executor.requests
             return checkStatusCount(executor)
-        })
+        });
     } catch (err) {
         console.log('Ошибка подключения к atlas: ' + err)
     }
@@ -184,11 +187,12 @@ async function sortByGrade(executors) {
 export async function getServerSideProps() {
     //let result = await aggregateExecutors(); // Результат аггрегации
     let result = await aggregateExecutors()
-    result = await checkStatusCount(result)
-    const gradedExecutors = await decisionMatrix(result) // Подсчет решения
-    const executors = await gradeNormalize(gradedExecutors) // Нормализация значений (от 0 до 100)
-    const sortedExecutors = await sortByGrade(executors) // Сортировка по оценке
-    return { props: { executors: sortedExecutors } }
+    if (result && result.length > 0) {
+        const gradedExecutors = await decisionMatrix(result) // Подсчет решения
+        const executors = await gradeNormalize(gradedExecutors) // Нормализация значений (от 0 до 100)
+        result = await sortByGrade(executors) // Сортировка по оценке
+    }
+    return { props: { executors: result } }
 }
 
 export default Indicators

@@ -10,6 +10,9 @@ const Header = () => {
             <CustomLink href="/indicators" className="mx-5 flex justify-end content-center">
                 <h2>Показатели выполнения работ</h2>
             </CustomLink>
+            <CustomLink href="/news" className="mx-5 flex justify-end content-center">
+                <h2>Новости</h2>
+            </CustomLink>
             <UserLoginPanel />
         </header>
     )
