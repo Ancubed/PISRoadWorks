@@ -8,10 +8,12 @@ const roadworksHandler = async (req, res) => {
     try {
         let filterQuery = {};
 
-        if (req.query.status) {
+        if (req.query.status && req.query.status != 'actual') {
             let status = Object.keys(REQUEST_STATUS_ENUM).find(status => status === req.query.status);
             if (!status) return notSuccess200Json(res, 'Статус заявки указан неверно');
             filterQuery['status'] = status;
+        } else if (req.query.status) {
+            filterQuery['status'] = { $in: ['inProgress', 'expired'] };
         }
 
         if (req.query.executor) filterQuery['executorId'] = req.query.executor;
