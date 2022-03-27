@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 
 import CustomLink from './customLink'
 
-const UserLoginPanel = () => {
+const UserLoginPanel = (props) => {
     const { data: session, status } = useSession()
 
     return (
@@ -75,7 +75,7 @@ const UserLoginPanel = () => {
                     )}
                 </Menu>
             ) : (
-                <CustomLink href="/api/auth/signin">
+                <CustomLink href="/api/auth/signin" title='Личный кабинет исполнителя и заказчика'>
                     <h2>Вход</h2>
                 </CustomLink>
             )}
