@@ -1,4 +1,5 @@
 import CustomLink from '../common/customLink'
+import { REQUEST_STATUS_ENUM, REQUEST_STATUS_COLOR } from '../../lib/constants'
 
 const RoadworksLink = (props) => {
 
@@ -12,8 +13,11 @@ const RoadworksLink = (props) => {
                 'Content-Type': 'application/json;charset=utf-8'
                 }
             });
-            if (response.ok) {
+            let data = await response.json();
+            if (response.ok && data?.isSuccess) {
                 props.deleteWork(props.work.id);
+            } else {
+                alert(data?.message || 'В данный момент нельзя удалить заявку');
             }
         }
     }
@@ -22,28 +26,46 @@ const RoadworksLink = (props) => {
         <div className='p-4 border-2 rounded flex justify-between'>
             <CustomLink
                 href={`/roadworks/${props.work.id}`}
-                className="flex grow flex-col p-1 hover:text-teal-600"
+                className="flex grow flex-col p-1 hover:text-sky-600"
             >
                 <span className="mr-4">{props.work.adress}</span>
                 <span className="mr-4">{props.work.executorName}</span>
                 <span className="mr-4">{`${props.work.dateStart} - ${props.work.dateEnd}`}</span>
             </CustomLink>
-            {props.user?.role?.id == 0 
-            &&
-            <div>
-                <CustomLink
-                    href={`/roadworks/${props.work.id}/edit`}
-                    className="p-1 hover:text-teal-600"
-                >
-                    <span>Р.</span>
-                </CustomLink>
-                <span
-                    className="p-1 cursor-pointer hover:text-teal-600"
-                    onClick={handleDeleteLinkClick}
-                >
-                    <span>У.</span>
+            <div className='flex flex-col justify-between items-end'>
+                <span className={`text-sm ${props.work.status == 'new' ? 'text-green-500' : 'text-gray-500 '}`}>
+                    {REQUEST_STATUS_ENUM[props.work.status]}
                 </span>
-            </div>}
+                {[0,1].includes(props.user?.role?.id)
+                &&
+                <div>
+                    <CustomLink
+                        href={`/roadworks/${props.work.id}/edit`}
+                        className="p-1 hover:text-sky-600"
+                        title='Редактировать'
+                    >
+                        <span>Р.</span>
+                    </CustomLink>
+                    <span
+                        className="p-1 cursor-pointer hover:text-sky-600"
+                        onClick={handleDeleteLinkClick}
+                        title='Удалить'
+                    >
+                        <span>У.</span>
+                    </span>
+                </div>}
+                {[2].includes(props.user?.role?.id)
+                &&
+                <div>
+                    <CustomLink
+                        href={`/roadworks/${props.work.id}/submit-document`}
+                        className="p-1 hover:text-sky-600"
+                        title='Подать документы на проведение дорожных работ'
+                    >
+                        <span>Подать документы</span>
+                    </CustomLink>
+                </div>}
+            </div>
         </div>
     )
 }

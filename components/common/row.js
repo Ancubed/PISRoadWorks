@@ -1,3 +1,5 @@
+import CustomLink from "./customLink"
+
 /**
  * Строка таблицы
  * @param {*} props - isHeader - Заголовок ли эта строка
@@ -10,15 +12,31 @@
  * @returns
  */
 
-const Row = (props) => {
+const Row = ({ 
+    companyId = null,
+    companyName = 'Скрытая компания',
+    total = 0, 
+    done = 0, 
+    inProgress = 0, 
+    expired = 0, 
+    grade = 0, 
+    isHeader = false 
+}) => {
     return (
-        <tr className={props.isHeader ? 'font-bold h-12' : 'h-10'}>
-            <td>{props.companyName}</td>
-            <td className="text-center">{props.total}</td>
-            <td className="text-center">{props.done}</td>
-            <td className="text-center">{props.inProgress}</td>
-            <td className="text-center">{props.expired}</td>
-            <td className="text-center">{props.grade}</td>
+        <tr className={isHeader ? 'font-bold h-12' : 'h-10'}>
+            <td>
+                <CustomLink 
+                    href={companyId ? `/accounts/${companyId}` : '#'}
+                    className="flex grow flex-col p-1 hover:text-sky-600"
+                >
+                    {companyName}
+                </CustomLink>
+            </td>
+            <td className="text-center">{total}</td>
+            <td className="text-center">{done}</td>
+            <td className="text-center">{inProgress}</td>
+            <td className="text-center">{expired}</td>
+            <td className="text-center">{grade}</td>
         </tr>
     )
 }

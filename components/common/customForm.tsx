@@ -249,7 +249,7 @@ const CustomForm = (props: CustomFormProps) => {
             <button
                 disabled={props.disableButton}
                 type="submit"
-                className="flex grow w-full justify-center p-2 rounded border-2"
+                className="flex grow w-full justify-center p-2 rounded border-2 hover:text-sky-600"
             >
                 {props.buttonText || 'Отправить'}
             </button>

@@ -32,7 +32,7 @@ const RequestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: REQUEST_STATUS_ENUM,
+        enum: Object.keys(REQUEST_STATUS_ENUM),
         required: [true, 'Пожалуйста, объявите статус работы'],
     },
     files: {

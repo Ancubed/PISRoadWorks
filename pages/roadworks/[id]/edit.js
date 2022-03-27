@@ -92,6 +92,7 @@ export async function getServerSideProps(context) {
     }
     if (work) data = {
         id: work._id.toString(),
+        customerId: work.customerId.toString(),
         executorId: work.executorId.toString(),
         executorName: work.executorName,
         coordinates: work.coordinates,

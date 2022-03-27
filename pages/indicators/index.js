@@ -13,6 +13,13 @@ const Indicators = ({ executors }) => {
     return (
         <main>
             <h1 className="text-2xl mb-4">Показатели выполнения работ</h1>
+            {(!executors || executors.length == 0) 
+            && 
+            <span>
+                Нет данных
+            </span>}
+            {executors && executors.length > 0
+            && 
             <table className="w-full">
                 <tbody>
                     <Row
@@ -26,23 +33,22 @@ const Indicators = ({ executors }) => {
                     ></Row>
                     {executors.map((executor, key) => (
                         <Row
-                            companyName={
-                                executor.companyName || 'Скрытая компания'
-                            }
+                            companyName={executor.companyName}
+                            companyId={executor.companyId}
                             total={
                                 executor.done +
                                     executor.inProgress +
-                                    executor.expired || 0
+                                    executor.expired
                             }
-                            done={executor.done || 0}
-                            inProgress={executor.inProgress || 0}
-                            expired={executor.expired || 0}
-                            grade={executor.grade || 0}
+                            done={executor.done}
+                            inProgress={executor.inProgress}
+                            expired={executor.expired}
+                            grade={executor.grade}
                             key={key}
                         ></Row>
                     ))}
                 </tbody>
-            </table>
+            </table>}
         </main>
     )
 }
@@ -112,8 +118,8 @@ async function aggregateExecutors() {
                 $group: {
                     _id: {
                         status: '$status',
-                        companyId: '$companyId',
-                        companyName: '$companyName',
+                        executorId: '$executorId',
+                        executorName: '$executorName',
                     },
                     count: { $sum: 1 },
                 },
@@ -121,8 +127,8 @@ async function aggregateExecutors() {
             {
                 $group: {
                     _id: {
-                        companyId: '$_id.companyId',
-                        companyName: '$_id.companyName',
+                        executorId: '$_id.executorId',
+                        executorName: '$_id.executorName',
                     },
                     requests: {
                         $push: {
@@ -134,8 +140,8 @@ async function aggregateExecutors() {
             },
         ])
         return result.map((executor) => {
-            executor.id = executor._id.companyId.toString()
-            executor.companyName = executor._id.companyName
+            executor.id = executor._id.executorId.toString()
+            executor.companyName = executor._id.executorName
             for (let i = 0; i < executor.requests.length; i++) {
                 const status = executor.requests[i].status
                 const count = executor.requests[i].count
@@ -184,11 +190,13 @@ async function sortByGrade(executors) {
 export async function getServerSideProps() {
     //let result = await aggregateExecutors(); // Результат аггрегации
     let result = await aggregateExecutors()
-    result = await checkStatusCount(result)
-    const gradedExecutors = await decisionMatrix(result) // Подсчет решения
-    const executors = await gradeNormalize(gradedExecutors) // Нормализация значений (от 0 до 100)
-    const sortedExecutors = await sortByGrade(executors) // Сортировка по оценке
-    return { props: { executors: sortedExecutors } }
+    if (result && result.length > 0) {
+        result = await checkStatusCount(result)
+        const gradedExecutors = await decisionMatrix(result) // Подсчет решения
+        const executors = await gradeNormalize(gradedExecutors) // Нормализация значений (от 0 до 100)
+        result = await sortByGrade(executors) // Сортировка по оценке
+    }
+    return { props: { executors: result } }
 }
 
 export default Indicators

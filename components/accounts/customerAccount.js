@@ -1,7 +1,9 @@
+import RoadWorksLinksList from '../../components/roadworks/roadworksLinksList'
+
 const CustomerAccount = (props) => {
     return (
-        <div>
-            <h1>Customer {props.user.name}</h1>
+        <div className=''>
+            <RoadWorksLinksList customer={props.user.id} user={props.user} />
         </div>
     )
 }

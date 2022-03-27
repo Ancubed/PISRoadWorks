@@ -4,6 +4,7 @@ import RequestModel from '../../../../models/Request'
 import UserModel from '../../../../models/User'
 
 import { 
+    isSession,
     isAcceptByRole, 
     isOwnerDataSession, 
     sendJson, 
@@ -45,7 +46,7 @@ const getRoadwork = async (req, res) => {
 
 const editRoadwork = async (req, res) => {
     const session = await getSession({ req });
-    if (!isAcceptByRole(session)) 
+    if (!isSession(session)) 
         throw generateApiError('Доступ запрещен', 403);
 
     if (!req.body) throw generateApiError('Запрос с пустым body', 400);
@@ -53,7 +54,7 @@ const editRoadwork = async (req, res) => {
     trimBody(req);
 
     const { id } = req.query;
-    if (!id) generateApiError('Не указан id', 400);
+    if (!id) throw generateApiError('Не указан id', 400);
 
     let { coordinates, executorId, adress, dateStart, dateEnd, comment } = req.body;
 
@@ -65,12 +66,14 @@ const editRoadwork = async (req, res) => {
 
     let request = await RequestModel.findById(id);
 
-    if (!isOwnerDataSession(
+    if (!request) throw generateApiError('Заявка не найдена', 400);
+
+    if (!isAcceptByRole(session) && !isOwnerDataSession(
         session,
         request.customerId)) 
             throw generateApiError('Доступ запрещен', 403);
 
-    if (request.status === 'accepted') return notSuccess200Json(res, 'Нельзя изменять принятые заявки');
+    if (request.status !== 'new') return notSuccess200Json(res, 'Можно изменять заявки только со статусом "Новая"');
     
     let executor = await UserModel.findById(executorId);
 
@@ -102,16 +105,28 @@ const editRoadwork = async (req, res) => {
 
     await request.save();
 
-    return sendJson(res, 200, null, 'Аккаунт успешно изменен!');
+    return sendJson(res, 200, null, 'Заявка успешно изменена!');
 }
 
 const deleteRoadwork = async (req, res) => {
-    
-    if (!isAcceptByRole(await getSession({ req })))
+    const session = await getSession({ req });
+
+    if (!isSession(session))
         throw generateApiError('Доступ запрещен', 403);
 
     const { id } = req.query;
-    if (!id) generateApiError('Не указан id', 400);
+    if (!id) throw generateApiError('Не указан id', 400);
+    
+    let request = await RequestModel.findById(id);
+
+    if (!request) throw generateApiError('Заявка не найдена', 400);
+
+    if (!isAcceptByRole(session) && !isOwnerDataSession(
+        session,
+        request.customerId)) 
+            throw generateApiError('Доступ запрещен', 403);
+
+    if (request.status === 'inProgress') return notSuccess200Json(res, 'Нельзя удалять заявки со статусом "Выполняется"');
 
     await RequestModel.findByIdAndRemove(id)
 

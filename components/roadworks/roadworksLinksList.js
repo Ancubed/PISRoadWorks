@@ -7,10 +7,22 @@ import LoadSpinner from '../common/loadSpinner'
 
 import { fetcher } from '../../lib/functions'
 
+const generateUrl = (executor, customer) => {
+    let url = '/api/roadworks';
+    if (executor || customer) {
+        url += '?';
+        if (executor) {
+            url += `executor=${executor}${customer ? '&' : ''}`
+        }
+        if (customer) {
+            url += `customer=${customer}`
+        }
+    }
+    return url;
+}
+
 const RoadworksLinksList = (props) => {
-    const { data, error } = useSWR(props.executor 
-        ? `/api/roadworks?executor=${props.executor}` 
-        : '/api/roadworks', fetcher)
+    const { data, error } = useSWR(generateUrl(props.executor, props.customer), fetcher)
     const [roadworks, setRoadworks] = useState(data)
 
     useEffect(() => { setRoadworks(data); }, [data])
@@ -27,13 +39,15 @@ const RoadworksLinksList = (props) => {
             {!roadworks && !error && <LoadSpinner />}
             {!roadworks && error || roadworks?.length == 0 && !error && <p>Нет данных</p>}
             {roadworks && <div>
-                {roadworks.map((work, key) => {
-                    return work.id !== props.user?.id ? (
-                        <RoadworksLink work={work} key={key} user={props.user} deleteWork={deleteWork}/>
-                    ) : null
-                })}
+                {roadworks.map((work, key) => 
+                <RoadworksLink 
+                    work={work} 
+                    key={key} 
+                    user={props.user} 
+                    deleteWork={deleteWork}/>
+                )}
             </div>}
-            {props.user?.role?.id == 0 
+            {[0,1].includes(props.user?.role?.id)
             && 
             <LinkButton text="Добавить" link="/roadworks/create"/>}
         </div>

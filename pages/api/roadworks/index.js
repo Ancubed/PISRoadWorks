@@ -9,12 +9,14 @@ const roadworksHandler = async (req, res) => {
         let filterQuery = {};
 
         if (req.query.status) {
-            let status = REQUEST_STATUS_ENUM.find(status => status === req.query.status);
+            let status = Object.keys(REQUEST_STATUS_ENUM).find(status => status === req.query.status);
             if (!status) return notSuccess200Json(res, 'Статус заявки указан неверно');
             filterQuery['status'] = status;
         }
 
         if (req.query.executor) filterQuery['executorId'] = req.query.executor;
+
+        if (req.query.customer) filterQuery['customerId'] = req.query.customer;
 
         let roadworks = (await RequestModel.find(filterQuery).sort('-dateOfStart').exec()).map((work) => {
             return {
