@@ -7,7 +7,7 @@ import UserModel from '../../../models/User'
 
 import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
 
-function EditRoadworks(props) {
+function EditRoadwork(props) {
     const { data: session } = useSession()
 
     if (!props.roadwork)
@@ -118,4 +118,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default EditRoadworks
+export default EditRoadwork
