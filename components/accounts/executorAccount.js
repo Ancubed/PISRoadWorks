@@ -1,8 +1,10 @@
+import RoadWorksLinksList from '../../components/roadworks/roadworksLinksList'
+
 const ExecutorAccount = (props) => {
     return (
-        <>
-            <h1>Executor {props.user.name}</h1>
-        </>
+        <div className=''>
+            <RoadWorksLinksList executor={props.user.id} user={props.user} />
+        </div>
     )
 }
 

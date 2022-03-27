@@ -54,13 +54,13 @@ const RoadworksLink = (props) => {
                         <span>У.</span>
                     </span>
                 </div>}
-                {[2].includes(props.user?.role?.id)
+                {[2].includes(props.user?.role?.id) && (props.work.status == 'new' || props.work.status == 'rejected')
                 &&
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/submit-document`}
                         className="p-1 hover:text-sky-600"
-                        title='Подать документы на проведение дорожных работ'
+                        title='Подать или изменить документы на проведение дорожных работ'
                     >
                         <span>Подать документы</span>
                     </CustomLink>
