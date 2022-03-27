@@ -150,7 +150,7 @@ async function aggregateExecutors() {
             delete executor._id
             delete executor.requests
             return checkStatusCount(executor)
-        })
+        });
     } catch (err) {
         console.log('Ошибка подключения к atlas: ' + err)
     }
@@ -191,7 +191,6 @@ export async function getServerSideProps() {
     //let result = await aggregateExecutors(); // Результат аггрегации
     let result = await aggregateExecutors()
     if (result && result.length > 0) {
-        result = await checkStatusCount(result)
         const gradedExecutors = await decisionMatrix(result) // Подсчет решения
         const executors = await gradeNormalize(gradedExecutors) // Нормализация значений (от 0 до 100)
         result = await sortByGrade(executors) // Сортировка по оценке
