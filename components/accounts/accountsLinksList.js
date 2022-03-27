@@ -21,7 +21,7 @@ const AccountsLinksList = (props) => {
 
     return (
         <div className={`flex grow flex-col ${props.className}`}>
-            <h2 className="text-xl mb-1">Аккаунты</h2>
+            <h1 className="text-2xl mb-2">Аккаунты</h1>
             {!accounts && !error && <LoadSpinner />}
             {!accounts && error || accounts?.length == 0 && !error && <p>Нет данных</p>}
             {accounts && <div>
