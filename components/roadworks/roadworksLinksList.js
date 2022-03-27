@@ -7,22 +7,25 @@ import LoadSpinner from '../common/loadSpinner'
 
 import { fetcher } from '../../lib/functions'
 
-const generateUrl = (executor, customer) => {
+const generateUrl = (executor, customer, status) => {
     let url = '/api/roadworks';
-    if (executor || customer) {
+    if (executor || customer || status) {
         url += '?';
         if (executor) {
             url += `executor=${executor}${customer ? '&' : ''}`
         }
         if (customer) {
-            url += `customer=${customer}`
+            url += `customer=${customer}${status ? '&' : ''}`
+        }
+        if (status) {
+            url += `status=${status}`
         }
     }
     return url;
 }
 
 const RoadworksLinksList = (props) => {
-    const { data, error } = useSWR(generateUrl(props.executor, props.customer), fetcher)
+    const { data, error } = useSWR(generateUrl(props.executor, props.customer, props.status), fetcher)
     const [roadworks, setRoadworks] = useState(data)
 
     useEffect(() => { setRoadworks(data); }, [data])
@@ -35,7 +38,7 @@ const RoadworksLinksList = (props) => {
 
     return (
         <div className={`flex grow flex-col ${props.className}`}>
-            <h2 className="text-xl mb-1">Дорожные работы</h2>
+            <h1 className="text-2xl mb-2">Список дорожных работ</h1>
             {!roadworks && !error && <LoadSpinner />}
             {!roadworks && error || roadworks?.length == 0 && !error && <p>Нет данных</p>}
             {roadworks && <div>
