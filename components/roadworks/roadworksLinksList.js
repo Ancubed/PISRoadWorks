@@ -40,7 +40,7 @@ const RoadworksLinksList = (props) => {
         <div className={`flex grow flex-col ${props.className}`}>
             <h1 className="text-2xl mb-2">Список дорожных работ</h1>
             {!roadworks && !error && <LoadSpinner />}
-            {!roadworks && error || roadworks?.length == 0 && !error && <p>Нет данных</p>}
+            {!roadworks && error || roadworks?.length == 0 && !error && <p>Нет дорожных работ</p>}
             {roadworks && <div>
                 {roadworks.map((work, key) => 
                 <RoadworksLink 

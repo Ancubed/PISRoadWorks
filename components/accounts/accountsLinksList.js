@@ -23,7 +23,7 @@ const AccountsLinksList = (props) => {
         <div className={`flex grow flex-col ${props.className}`}>
             <h1 className="text-2xl mb-2">Аккаунты</h1>
             {!accounts && !error && <LoadSpinner />}
-            {!accounts && error || accounts?.length == 0 && !error && <p>Нет данных</p>}
+            {!accounts && error || accounts?.length == 0 && !error && <p>Нет аккаунтов</p>}
             {accounts && <div>
                 {accounts.map((acc, key) => {
                     return acc.id !== props.user.id ? (
