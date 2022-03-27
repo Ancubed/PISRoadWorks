@@ -31,7 +31,7 @@ function SubmitDocuments(props) {
                             zoom: 15,
                             autoFitToViewport: 'always'
                         }}
-                        className='m-2 flex basis-3/4 grow lg:grow-0 h-96'
+                        className='my-2 flex basis-3/4 grow lg:grow-0 h-96'
                     >
                         <Polyline
                             geometry={props.roadwork.coordinates}
