@@ -4,10 +4,25 @@ import Files from 'react-files'
 import FormButton from './formButton'
 
 const CustomFiles = (props) => {
+    const DEFAULT_MAX_FILE_COUNT = 7;
     const [files, setFiles] = useState([])
 
+    function maxFileCount(filesState) {
+        if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > DEFAULT_MAX_FILE_COUNT) {
+            let err = new Error('maximum file count reached');
+            err.code = 4;
+            onFilesError(err);
+            return true;
+        }
+        return false;
+    }
+
     function onFilesChange(newFiles) {
-        setFiles([...files, ...newFiles])
+        let newFilesState = [...files, ...newFiles];
+
+        if (maxFileCount(newFilesState)) return;
+
+        setFiles(newFilesState)
         //console.log([...files, ...newFiles]);
     }
     
@@ -26,6 +41,8 @@ const CustomFiles = (props) => {
 
     return (
         <>
+            {(props.maxFiles && files.length < props.maxFiles || !props.maxFiles && files.length < DEFAULT_MAX_FILE_COUNT)
+            &&
             <Files
                 className='flex justify-center items-center border border-dashed rounded-lg cursor-pointer mb-4 '
                 style={{ height: '50px' }}
@@ -33,13 +50,13 @@ const CustomFiles = (props) => {
                 onError={onFilesError}
                 accepts={props.accepts || ['.doc', '.docx', '.pdf', '.odt']}
                 multiple
-                maxFiles={10}
-                maxFileSize={10000000}
+                maxFiles={props.maxFiles || DEFAULT_MAX_FILE_COUNT}
+                maxFileSize={props.maxFileSize || 1000000}
                 minFileSize={0}
                 clickable
             >
                 Перенесите файлы сюда или кликните для загрузки
-            </Files>
+            </Files>}
             {files && files.length > 0 
             &&
             <div className="flex flex-col">
