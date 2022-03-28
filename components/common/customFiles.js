@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Files from 'react-files'
 
+import FormButton from './formButton'
+
 const CustomFiles = (props) => {
     const [files, setFiles] = useState([])
 
@@ -18,10 +20,14 @@ const CustomFiles = (props) => {
         setFiles(files.filter(file => file.id !== e.target.dataset.fileid))
     }
 
+    function saveFiles() {
+        alert('works');
+    }
+
     return (
         <>
             <Files
-                className='flex justify-center items-center border rounded-lg cursor-pointer mb-4 '
+                className='flex justify-center items-center border border-dashed rounded-lg cursor-pointer mb-4 '
                 style={{ height: '50px' }}
                 onChange={onFilesChange}
                 onError={onFilesError}
@@ -37,24 +43,27 @@ const CustomFiles = (props) => {
             {files && files.length > 0 
             &&
             <div className="flex flex-col">
-                {files.map((file, key) => 
-                    <div className='flex py-2' key={key}>
-                        <div className='flex justify-between flex-grow'>
-                            <span className='font-semibold'>{file.name}</span>
-                            <span className='font-light'>{file.sizeReadable}</span>
+                <div className="flex flex-col">
+                    {files.map((file, key) => 
+                        <div className='flex py-2' key={key}>
+                            <div className='flex justify-between flex-grow'>
+                                <span className='font-semibold'>{file.name}</span>
+                                <span className='font-light'>{file.sizeReadable}</span>
+                            </div>
+                            <div className='ml-8'>
+                                <span
+                                    className="p-1 cursor-pointer hover:text-sky-600"
+                                    onClick={filesRemoveOne}
+                                    title='Удалить'
+                                    data-fileid={file.id}
+                                >
+                                    У.
+                                </span>
+                            </div>
                         </div>
-                        <div className='ml-8'>
-                            <span
-                                className="p-1 cursor-pointer hover:text-sky-600"
-                                onClick={filesRemoveOne}
-                                title='Удалить'
-                                data-fileid={file.id}
-                            >
-                                У.
-                            </span>
-                        </div>
-                    </div>
-                )}
+                    )}
+                </div>
+                <FormButton type="button" text='Загрузить' onClick={saveFiles} className='my-2'/>
             </div>
             }
         </>
