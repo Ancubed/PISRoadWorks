@@ -23,7 +23,6 @@ const CustomFiles = (props) => {
         if (maxFileCount(newFilesState)) return;
 
         setFiles(newFilesState)
-        //console.log([...files, ...newFiles]);
     }
     
     function onFilesError(error, file) {
@@ -35,7 +34,7 @@ const CustomFiles = (props) => {
         setFiles(files.filter(file => file.id !== e.target.dataset.fileid))
     }
 
-    function saveFiles() {
+    function uploadFiles() {
         alert('works');
     }
 
@@ -80,7 +79,7 @@ const CustomFiles = (props) => {
                         </div>
                     )}
                 </div>
-                <FormButton type="button" text='Загрузить' onClick={saveFiles} className='my-2'/>
+                <FormButton type="button" text='Загрузить' onClick={uploadFiles} className='my-2'/>
             </div>
             }
         </>
