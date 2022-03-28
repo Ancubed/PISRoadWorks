@@ -60,9 +60,9 @@ const RoadworksLink = (props) => {
                     <CustomLink
                         href={`/roadworks/${props.work.id}/submit-document`}
                         className="p-1 hover:text-sky-600"
-                        title='Подать или изменить документы на проведение дорожных работ'
+                        title='Загрузить или изменить документы на проведение дорожных работ'
                     >
-                        <span>Подать документы</span>
+                        <span>Загрузить документы</span>
                     </CustomLink>
                 </div>}
             </div>

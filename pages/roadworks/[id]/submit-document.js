@@ -47,7 +47,7 @@ function SubmitDocuments(props) {
                 <RoadworkInfo className='m-2 flex basis-1/4 grow lg:grow-0' roadwork={props.roadwork}/>
             </div>
             <div className=''>
-                <h1 className="text-2xl my-4">Подача документов</h1>
+                <h1 className="text-2xl my-4">Загрузка документов</h1>
                 <CustomFiles />
             </div>
         </main>
