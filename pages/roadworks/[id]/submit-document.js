@@ -20,6 +20,8 @@ function SubmitDocuments(props) {
     if (!isAcceptByRole(session) && !isOwnerDataSession(session, props.roadwork.executorId))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
+    // Проверять статус заявки - нельзя изменять документы, когда работа одобрена+
+
     return (
         <main>
             <h1 className="text-2xl mb-4">{`Работа №${props.roadwork.id}`}</h1>
@@ -31,7 +33,7 @@ function SubmitDocuments(props) {
                             zoom: 15,
                             autoFitToViewport: 'always'
                         }}
-                        className='my-2 flex basis-3/4 grow lg:grow-0 h-96'
+                        className='m-2 flex basis-3/4 grow lg:grow-0 h-96'
                     >
                         <Polyline
                             geometry={props.roadwork.coordinates}
@@ -47,7 +49,7 @@ function SubmitDocuments(props) {
                 <RoadworkInfo className='m-2 flex basis-1/4 grow lg:grow-0' roadwork={props.roadwork}/>
             </div>
             <div className=''>
-                <h1 className="text-2xl my-4">Подача документов</h1>
+                <h1 className="text-2xl my-4">Документы</h1>
                 <CustomFiles />
             </div>
         </main>

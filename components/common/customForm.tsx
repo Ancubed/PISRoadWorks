@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { YMaps, Map, Polyline, Button } from 'react-yandex-maps';
 import { IEvent, GeoObject, ILineStringGeometry, Map as IMap, util,  } from "yandex-maps";
 
+import FormButton from './formButton';
+
 interface Field {
     type: string,
     id: string,
@@ -246,13 +248,7 @@ const CustomForm = (props: CustomFormProps) => {
             className={`flex justify-center my-4 ${error && 'text-rose-500'} ${isSuccess && 'text-green-500'}`}>
                 {message}
             </span>}
-            <button
-                disabled={props.disableButton}
-                type="submit"
-                className="flex grow w-full justify-center p-2 rounded border-2 hover:text-sky-600"
-            >
-                {props.buttonText || 'Отправить'}
-            </button>
+            <FormButton type={"submit"} disabled={props.disableButton} text={props.buttonText}/>
         </form>
     )
 }
