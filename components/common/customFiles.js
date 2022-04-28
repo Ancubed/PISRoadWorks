@@ -5,7 +5,7 @@ import FormButton from './formButton'
 
 const CustomFiles = (props) => {
     const DEFAULT_MAX_FILE_COUNT = 7;
-    const [files, setFiles] = useState([])
+    const [files, setFiles] = useState(props.file || [])
 
     function maxFileCount(filesState) {
         if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > DEFAULT_MAX_FILE_COUNT) {
@@ -50,7 +50,7 @@ const CustomFiles = (props) => {
                 accepts={props.accepts || ['.doc', '.docx', '.pdf', '.odt']}
                 multiple
                 maxFiles={props.maxFiles || DEFAULT_MAX_FILE_COUNT}
-                maxFileSize={props.maxFileSize || 1000000}
+                maxFileSize={props.maxFileSize || 10000000}
                 minFileSize={0}
                 clickable
             >
