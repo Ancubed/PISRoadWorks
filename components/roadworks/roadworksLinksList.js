@@ -9,13 +9,14 @@ import { fetcher } from '../../lib/functions'
 
 const generateUrl = (executor, customer, status, coords) => {
     let url = '/api/roadworks';
-    if (executor || customer || status) {
+    if (executor || customer || status || coords) {
         url += '?';
-        if (executor) url += `executor=${executor}${customer ? '&' : ''}`
-        if (customer) url += `customer=${customer}${status ? '&' : ''}`
+        if (executor) url += `executor=${executor}${customer || status || coords ? '&' : ''}`
+        if (customer) url += `customer=${customer}${status || coords ? '&' : ''}`
         if (status) url += `status=${status}${coords ? '&' : ''}`
         if (coords) url += `coords=${coords}`
     }
+    console.log(url)
     return url;
 }
 
