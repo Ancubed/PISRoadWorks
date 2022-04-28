@@ -34,7 +34,7 @@ const Home = () => {
                             <p>Адрес: ${roadwork.adress}</p>
                             <p>Дата проведения: ${roadwork.dateStart} - ${roadwork.dateEnd}</p>
                             <p>
-                              <a href="/roadworks/${roadwork.id}">Больше информации...</a>
+                              <a href="/roadworks/${roadwork.id}" style="color:#0284c7">Подробнее</a>
                             </p>
                         `
                         }}
