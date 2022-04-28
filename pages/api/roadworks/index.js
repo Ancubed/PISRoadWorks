@@ -21,7 +21,8 @@ const roadworksHandler = async (req, res) => {
         if (req.query.customer) filterQuery['customerId'] = req.query.customer;
 
         let roadworks = (await RequestModel.find(filterQuery).sort('-dateOfStart').exec()).map((work) => {
-            return {
+
+            let resultObj = {
                 id: work._id,
                 executorId: work.executorId,
                 executorName: work.executorName,
@@ -30,6 +31,10 @@ const roadworksHandler = async (req, res) => {
                 dateStart: dateFormatFromISO(work.dateOfStart?.toISOString()),
                 dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString())
             }
+
+            if (req.query.coords) resultObj.coordinates = work.coordinates
+
+            return resultObj
         })
 
         return sendJson(res, 200, roadworks)
