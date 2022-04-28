@@ -28,7 +28,7 @@ const CustomFiles = (props) => {
                 accepts={props.accepts || ['.doc', '.docx', '.pdf', '.odt']}
                 multiple
                 maxFiles={10}
-                maxFileSize={10000000}
+                maxFileSize={5000000}
                 minFileSize={0}
                 clickable
             >
