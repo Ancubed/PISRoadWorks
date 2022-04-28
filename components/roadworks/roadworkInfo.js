@@ -1,4 +1,5 @@
 import CustomLink from '../common/customLink'
+import { REQUEST_STATUS_ENUM, REQUEST_STATUS_COLOR } from '../../lib/constants'
 
 const RoadworkInfo = ({ className = '', roadwork }) => {
     return (
@@ -13,6 +14,10 @@ const RoadworkInfo = ({ className = '', roadwork }) => {
                         >
                         {roadwork.executorName}
                     </CustomLink>
+                </div>
+                <div className="my-2">
+                    <h2 className="text-xl">Статус</h2>
+                    <span className="text-lg">{REQUEST_STATUS_ENUM[roadwork.status]}</span>
                 </div>
                 <div className="my-2">
                     <h2 className="text-xl">Адрес</h2>
