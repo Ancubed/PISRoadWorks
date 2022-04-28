@@ -33,7 +33,7 @@ const RoadworksLink = (props) => {
                 <span className="mr-4">{`${props.work.dateStart} - ${props.work.dateEnd}`}</span>
             </CustomLink>
             <div className='flex flex-col justify-between items-end'>
-                <span className={`text-sm ${props.work.status == 'new' ? 'text-green-500' : 'text-gray-500 '}`}>
+                <span className={`text-sm text-gray-500`}>
                     {REQUEST_STATUS_ENUM[props.work.status]}
                 </span>
                 {[0,1].includes(props.user?.role?.id)
