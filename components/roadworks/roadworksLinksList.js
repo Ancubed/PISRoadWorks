@@ -7,32 +7,31 @@ import LoadSpinner from '../common/loadSpinner'
 
 import { fetcher } from '../../lib/functions'
 
-const generateUrl = (executor, customer, status) => {
+const generateUrl = (executor, customer, status, coords) => {
     let url = '/api/roadworks';
     if (executor || customer || status) {
         url += '?';
-        if (executor) {
-            url += `executor=${executor}${customer ? '&' : ''}`
-        }
-        if (customer) {
-            url += `customer=${customer}${status ? '&' : ''}`
-        }
-        if (status) {
-            url += `status=${status}`
-        }
+        if (executor) url += `executor=${executor}${customer ? '&' : ''}`
+        if (customer) url += `customer=${customer}${status ? '&' : ''}`
+        if (status) url += `status=${status}${coords ? '&' : ''}`
+        if (coords) url += `coords=${coords}`
     }
     return url;
 }
 
 const RoadworksLinksList = (props) => {
-    const { data, error } = useSWR(generateUrl(props.executor, props.customer, props.status), fetcher)
+    const { data, error } = useSWR(generateUrl(props.executor, props.customer, props.status, props.coords), fetcher)
     const [roadworks, setRoadworks] = useState(data)
 
-    useEffect(() => { setRoadworks(data); }, [data])
+    useEffect(() => { 
+        setRoadworks(data)
+        if (props.updateRoadworks) 
+            props.updateRoadworks(data) 
+    }, [data, props])
 
     const deleteWork = (id) => {
         if (roadworks && roadworks.length != 0) {
-            setRoadworks(roadworks.filter(work => work.id != id));
+            setRoadworks(roadworks.filter(work => work.id != id))
         }
     }
 
