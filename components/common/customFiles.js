@@ -9,7 +9,7 @@ const CustomFiles = (props) => {
 
     function maxFileCount(filesState) {
         if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > DEFAULT_MAX_FILE_COUNT) {
-            let err = new Error('maximum file count reached');
+            let err = new Error('Достигнут лимит файлов');
             err.code = 4;
             onFilesError(err);
             return true;
