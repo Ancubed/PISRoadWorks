@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 
 import UserModel from '../../../models/User'
-import Request from '../../../models/Request'
+import RequestModel from '../../../models/Request'
 
 import { isAcceptByRole, sendJson, notSuccess200Json, generateApiError, catchApiError, trimBody } from '../../../lib/functions'
 
@@ -44,7 +44,7 @@ const createRoadworks = async (req, res) => {
     if (dateStart > dateEnd)
         return notSuccess200Json(res, 'Дата окончания проведения работы должна быть позже даты начала');
 
-    await (new Request({
+    await (new RequestModel({
         executorId: executorId,
         customerId: session.user.id,
         executorName: executor.company,
