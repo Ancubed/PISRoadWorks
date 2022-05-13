@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { FileSchema } from './File'
 
 import { REQUEST_STATUS_ENUM } from '../lib/constants' 
 
@@ -35,15 +36,10 @@ const RequestSchema = new mongoose.Schema({
         enum: Object.keys(REQUEST_STATUS_ENUM),
         required: [true, 'Пожалуйста, объявите статус работы'],
     },
-    files: {
-        type: [
-            {
-                number: Number,
-                url: String,
-            },
-        ],
-        default: undefined,
-    },
+    files: [{ 
+        type: FileSchema, 
+        default: undefined 
+    }],
     comment: {
         type: String,
         maxlength: [256, 'Комментарий не может быть больше 256 символов'],
