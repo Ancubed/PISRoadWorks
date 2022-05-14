@@ -1,4 +1,6 @@
 import { useSession, getSession } from 'next-auth/react'
+import { useState, useEffect } from 'react'
+
 import Error from '../../../components/common/error'
 import CustomFiles from '../../../components/common/customFiles'
 
@@ -13,14 +15,22 @@ import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
 
 function SubmitDocuments(props) {
     const { data: session } = useSession()
+    const [ status, setStatus ] = useState(props.roadwork?.status)
+    const [ files, setFiles ] = useState(props.roadwork?.files || null)
+
+    const onSubmit = (data) => {
+        if (data.isSuccess && data.data?.files) {
+            setStatus(data.data?.status || 'submitted')
+            setFiles(data.data?.files || null);
+        }
+        alert('Документы успешно поданы')
+    }
 
     if (!props.roadwork)
         return <Error errStatusCode={404} errMessage="Дорожная работа не существует"/>
 
     if (!isAcceptByRole(session) && !isOwnerDataSession(session, props.roadwork.executorId))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
-
-    // Проверять статус заявки - нельзя изменять документы, когда работа одобрена+
 
     return (
         <main>
@@ -50,7 +60,24 @@ function SubmitDocuments(props) {
             </div>
             <div className=''>
                 <h1 className="text-2xl my-4">Документы</h1>
-                <CustomFiles />
+                {status == 'new' 
+                ?
+                    <CustomFiles roadwork={props.roadwork.id} submitCallback={onSubmit}/>
+                :
+                    <div>
+                        {files && files.length > 0 
+                        ?
+                            files.map((file, idx) => 
+                                <a href={`/api/files?id=${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
+                                    {`${idx + 1}. ${file.filename}`}
+                                </a>
+                            )
+                        :
+                            <div>Нет прикрепленных документов</div>
+                        }
+                    </div>
+                    
+                }
             </div>
         </main>
     )
@@ -73,9 +100,15 @@ export async function getServerSideProps(context) {
         adress: work.adress,
         dateStart: dateFormatFromISO(work.dateOfStart?.toISOString()),
         dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString()),
-        comment: work.comment
+        comment: work.comment,
+        files: work.files?.map(file => { 
+            return {
+                _id: file._id.toString(),
+                filename: file.filename
+            }
+        })
     }
-
+    
     return {
         props: {
             session: await getSession(context),
