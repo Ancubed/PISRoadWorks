@@ -3,6 +3,14 @@ import Files from 'react-files'
 
 import FormButton from './formButton'
 
+const generateUrl = (roadwork = null) => {
+    let url = '/api/files';
+    if (roadwork) {
+        url += `?roadwork=${roadwork}`;
+    }
+    return url;
+}
+
 const CustomFiles = (props) => {
     const DEFAULT_MAX_FILE_COUNT = 7;
     const [files, setFiles] = useState(props.file || [])
@@ -34,8 +42,20 @@ const CustomFiles = (props) => {
         setFiles(files.filter(file => file.id !== e.target.dataset.fileid))
     }
 
-    function uploadFiles() {
-        alert('works');
+    async function uploadFiles(e) {
+        if (files && files.length != 0) {
+            let formData = new FormData();
+            files.map(file => formData.append('files', file))
+            let response = await fetch(generateUrl(props.roadwork), {
+                method: 'post',
+                body: formData
+            });
+            if (response.ok) {
+                if (props.submitCallback) {
+                    props.submitCallback(await response.json())
+                }
+            }
+        }
     }
 
     return (
@@ -79,7 +99,7 @@ const CustomFiles = (props) => {
                         </div>
                     )}
                 </div>
-                <FormButton type="button" text='Загрузить' onClick={uploadFiles} className='my-2'/>
+                <FormButton type="submit" text='Загрузить' onClick={uploadFiles} className='my-2'/>
             </div>
             }
         </>
