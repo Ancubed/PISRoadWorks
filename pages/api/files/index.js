@@ -136,7 +136,6 @@ const filesHandler = async (req, res) => {
 
 export default filesHandler
 
-
 export const config = {
     api: {
       bodyParser: false,
