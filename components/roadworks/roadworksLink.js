@@ -54,7 +54,7 @@ const RoadworksLink = (props) => {
                         <span>У.</span>
                     </span>
                 </div>}
-                {[2].includes(props.user?.role?.id) && (props.work.status == 'new' || props.work.status == 'rejected')
+                {[0,2].includes(props.user?.role?.id) && (props.work.status == 'new' || props.work.status == 'rejected')
                 &&
                 <div>
                     <CustomLink
@@ -63,6 +63,17 @@ const RoadworksLink = (props) => {
                         title='Загрузить или изменить документы на проведение дорожных работ'
                     >
                         <span>Загрузить документы</span>
+                    </CustomLink>
+                </div>}
+                {[0,1].includes(props.user?.role?.id) && props.work.status == 'submitted'
+                &&
+                <div>
+                    <CustomLink
+                        href={`/roadworks/${props.work.id}/accept-document`}
+                        className="p-1 hover:text-sky-600"
+                        title='Проверить документы на проведение дорожных работ и выдат ордер'
+                    >
+                        <span>Проверить документы</span>
                     </CustomLink>
                 </div>}
             </div>
