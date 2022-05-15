@@ -58,7 +58,7 @@ const attachFileToRoadworks = async (res, roadwork, files) => {
                 return GridFS.delete(file._id)
             })
             await Promise.all(removeFilesPromise)
-            throw generateApiError('Превышен лимит количества файлов', 400)
+            throw generateApiError('Превышен лимит количества файлов. Вы должны удалить ранее прикрепленные файлы для продолжения', 400)
         }
         request.status = 'submitted'
         request.files = newFiles
