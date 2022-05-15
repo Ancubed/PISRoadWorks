@@ -62,7 +62,7 @@ function SubmitDocuments(props) {
                 <h1 className="text-2xl my-4">Документы</h1>
                 {status == 'new' 
                 ?
-                    <CustomFiles roadwork={props.roadwork.id} submitCallback={onSubmit}/>
+                    <CustomFiles roadwork={props.roadwork.id} uploadedFiles={files} submitCallback={onSubmit}/>
                 :
                     <div>
                         {files && files.length > 0 
