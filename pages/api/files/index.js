@@ -66,44 +66,36 @@ const attachFileToRoadworks = async (res, roadwork, files) => {
 }
 
 const filesUploadHandler = async (req, res) => {
-    try {
-        await middlewareWrapper(req, res, upload.array('files', 10))
+    await middlewareWrapper(req, res, upload.array('files', 10))
 
-        const { files } = req
-        const { roadwork } = req.query
+    const { files } = req
+    const { roadwork } = req.query
 
-        if (files && files.length > 0) {
-            let filesPromises = files.map(file => {
-                let readStream = fs.createReadStream(path.join(__dirname, '..', '..', '..', '..', 'tmp', file.filename))
-                return GridFS.upload(file.originalname, readStream, {
-                    encoding: file.encoding,
-                    mimetype: file.mimetype
-                })
-            })
-            
-            let uploadedFiles = await Promise.all(filesPromises)
+    if (!files || files.length == 0) throw generateApiError('Файлы не прикреплены', 400);
 
-            if (roadwork) {
-                return await attachFileToRoadworks(res, roadwork, uploadedFiles);
-            }
-        }
-        
-        sendJson(res, 200)
-    } catch(err) {
-        return catchApiError(err, res)
+    let filesPromises = files.map(file => {
+        let readStream = fs.createReadStream(path.join(__dirname, '..', '..', '..', '..', 'tmp', file.filename))
+        return GridFS.upload(file.originalname, readStream, {
+            encoding: file.encoding,
+            mimetype: file.mimetype
+        })
+    })
+    
+    let uploadedFiles = await Promise.all(filesPromises)
+
+    if (roadwork) {
+        return await attachFileToRoadworks(res, roadwork, uploadedFiles);
     }
+    
+    sendJson(res, 200)
 }
 
 const filesDownloadHandler = async (req, res) => {
-    try {
-        const { id } = req.query;
+    const { id } = req.query;
 
-        if (!id) generateApiError('Не указан id', 400);
+    if (!id) throw generateApiError('Не указан id', 400);
 
-        await GridFS.download(id, res)
-    } catch(err) {
-        return catchApiError(err, res)
-    }
+    await GridFS.download(id, res)
 }
 
 const filesHandler = async (req, res) => {
@@ -119,7 +111,7 @@ const filesHandler = async (req, res) => {
                 return await filesDownloadHandler(req, res);
             }
             case 'POST': {
-                return filesUploadHandler(req, res);
+                return await filesUploadHandler(req, res);
             }
             case 'DELETE': {
                 //return await (req, res);
