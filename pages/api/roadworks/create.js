@@ -51,6 +51,7 @@ const createRoadworks = async (req, res) => {
         adress: adress,
         status: 'new',
         comment: comment,
+        rejectComment: '',
         coordinates: coordinates,
         dateOfSubmission: new Date(),
         dateOfStart: dateStart,
