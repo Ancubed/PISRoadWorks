@@ -16,10 +16,34 @@ import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
 
 function SubmitDocuments(props) {
     const { data: session } = useSession()
+    const [files, setFiles] = useState(props.roadwork.files || null)
 
     const onSubmit = (data) => {
         if (data.isSuccess) {
             Router.push('/profile')
+        } else {
+            alert(data.message)
+        }
+    }
+
+    const handleDeleteLinkClick = async (fileId) => {
+        if(confirm('Вы уверены, что хотите удалить аккаунт?')) {
+            let response = await fetch(`/api/files/${fileId}`, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({
+                    filesId: [fileId],
+                    roadwork: props.roadwork.id
+                })
+            });
+            if (response.ok) {
+                let json = await response.json()
+                if (json.isSuccess) {
+                    setFiles(files.filter(file => file._id != fileId));
+                }
+            }
         }
     }
 
@@ -68,13 +92,35 @@ function SubmitDocuments(props) {
                 <h1 className="text-2xl my-4">Документы</h1>
                 {props.roadwork.status == 'new' || props.roadwork.status == 'rejected' 
                 ?
-                    <CustomFiles roadwork={props.roadwork.id} uploadedFiles={props.roadwork.files} submitCallback={onSubmit}/>
+                    <>
+                        <CustomFiles roadwork={props.roadwork.id} submitCallback={onSubmit}/>
+                        {files && files.length > 0
+                        &&
+                            <div>
+                                <h2 className="text-xl mb-2">Загруженные ранее</h2>
+                                {files.map((file, idx) => 
+                                    <div key={idx} className='flex justify-between'>
+                                        <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-sky-600'>
+                                            {`${idx + 1}. ${file.filename}`}
+                                        </a>
+                                        <span
+                                            className="p-1 cursor-pointer hover:text-sky-600"
+                                            onClick={() => handleDeleteLinkClick(file._id)}
+                                            title='Удалить'
+                                        >
+                                            <span>У.</span>
+                                        </span>
+                                    </div>)
+                                }
+                            </div>
+                        }
+                    </>
                 :
                     <div>
-                        {props.roadwork.files && props.roadwork.files.length > 0 
+                        {files && files.length > 0 
                         ?
-                        props.roadwork.files.map((file, idx) => 
-                                <a href={`/api/files?id=${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
+                        files.map((file, idx) => 
+                                <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
                                     {`${idx + 1}. ${file.filename}`}
                                 </a>
                             )
