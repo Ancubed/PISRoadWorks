@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Files from 'react-files'
 
+import { MAX_FILES_COUNT } from '../../lib/constants'
+
 import FormButton from './formButton'
 
 const generateUrl = (roadwork = null) => {
@@ -12,11 +14,10 @@ const generateUrl = (roadwork = null) => {
 }
 
 const CustomFiles = (props) => {
-    const DEFAULT_MAX_FILE_COUNT = 7;
     const [files, setFiles] = useState(props.file || [])
 
     function maxFileCount(filesState) {
-        if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > DEFAULT_MAX_FILE_COUNT) {
+        if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > MAX_FILES_COUNT) {
             let err = new Error('Достигнут лимит файлов');
             err.code = 4;
             onFilesError(err);
@@ -50,17 +51,22 @@ const CustomFiles = (props) => {
                 method: 'post',
                 body: formData
             });
-            if (response.ok) {
+            try {
+                let json = await response.json()
                 if (props.submitCallback) {
-                    props.submitCallback(await response.json())
+                    props.submitCallback(json)
                 }
+            } catch (err) {
+                console.error(err);
+                alert('Ошибка при загрузке файлов')
             }
+            
         }
     }
 
     return (
         <>
-            {(props.maxFiles && files.length < props.maxFiles || !props.maxFiles && files.length < DEFAULT_MAX_FILE_COUNT)
+            {(props.maxFiles && files.length < props.maxFiles || !props.maxFiles && files.length < MAX_FILES_COUNT)
             &&
             <Files
                 className='flex justify-center items-center border border-dashed rounded-lg cursor-pointer mb-4 '
@@ -69,7 +75,7 @@ const CustomFiles = (props) => {
                 onError={onFilesError}
                 accepts={props.accepts || ['.doc', '.docx', '.pdf', '.odt']}
                 multiple
-                maxFiles={props.maxFiles || DEFAULT_MAX_FILE_COUNT}
+                maxFiles={props.maxFiles || MAX_FILES_COUNT}
                 maxFileSize={props.maxFileSize || 10000000}
                 minFileSize={0}
                 clickable
