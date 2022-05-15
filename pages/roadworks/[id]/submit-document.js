@@ -1,5 +1,6 @@
 import { useSession, getSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
+import Router from 'next/router'
 
 import Error from '../../../components/common/error'
 import CustomFiles from '../../../components/common/customFiles'
@@ -15,15 +16,11 @@ import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
 
 function SubmitDocuments(props) {
     const { data: session } = useSession()
-    const [ status, setStatus ] = useState(props.roadwork?.status)
-    const [ files, setFiles ] = useState(props.roadwork?.files || null)
 
     const onSubmit = (data) => {
-        if (data.isSuccess && data.data?.files) {
-            setStatus(data.data?.status || 'submitted')
-            setFiles(data.data?.files || null);
+        if (data.isSuccess) {
+            Router.push('/profile')
         }
-        alert('Документы успешно поданы')
     }
 
     if (!props.roadwork)
@@ -58,16 +55,25 @@ function SubmitDocuments(props) {
                 </YMaps>
                 <RoadworkInfo className='m-2 flex basis-1/4 grow lg:grow-0' roadwork={props.roadwork}/>
             </div>
+            {props.roadwork.status == 'rejected' && props.roadwork.rejectComment
+            &&
+                <div>
+                    <h1 className="text-2xl my-4">Причина отклонения</h1>
+                    <div className='w-full'>
+                        {props.roadwork.rejectComment}
+                    </div>
+                </div>
+            }
             <div className=''>
                 <h1 className="text-2xl my-4">Документы</h1>
-                {status == 'new' 
+                {props.roadwork.status == 'new' || props.roadwork.status == 'rejected' 
                 ?
-                    <CustomFiles roadwork={props.roadwork.id} uploadedFiles={files} submitCallback={onSubmit}/>
+                    <CustomFiles roadwork={props.roadwork.id} uploadedFiles={props.roadwork.files} submitCallback={onSubmit}/>
                 :
                     <div>
-                        {files && files.length > 0 
+                        {props.roadwork.files && props.roadwork.files.length > 0 
                         ?
-                            files.map((file, idx) => 
+                        props.roadwork.files.map((file, idx) => 
                                 <a href={`/api/files?id=${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
                                     {`${idx + 1}. ${file.filename}`}
                                 </a>
@@ -101,6 +107,7 @@ export async function getServerSideProps(context) {
         dateStart: dateFormatFromISO(work.dateOfStart?.toISOString()),
         dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString()),
         comment: work.comment,
+        rejectComment: work.rejectComment,
         files: work.files?.map(file => { 
             return {
                 _id: file._id.toString(),
