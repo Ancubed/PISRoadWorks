@@ -48,7 +48,7 @@ const Home = () => {
                     )}
                 </Map>
             </YMaps>
-            <RoadWorksLinksList status="actual" coords={true} updateRoadworks={setRoadworks} className='mt-4'/>
+            <RoadWorksLinksList status="inProgress" coords={true} updateRoadworks={setRoadworks} className='mt-4'/>
         </main>
     )
 }

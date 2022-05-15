@@ -44,6 +44,14 @@ const changeRoadworkStatus = async (req, res) => {
             throw generateApiError('Доступ запрещен', 403)
 
     if (status === 'rejected' && comment) request.rejectComment = comment;
+    if (status === 'done') {
+        let dateOfStart = request.dateOfStart
+        if (new Date(dateOfStart) > new Date()) return notSuccess200Json(res, `Заявка не может иметь статус "Выполнена", так как дата начала работ еще не наступила`)
+    }
+    if (status === 'expired') {
+        let dateOfEnd = request.dateOfStart
+        if (new Date(dateOfEnd) > new Date()) return notSuccess200Json(res, `Заявка не может иметь статус "Просрочена", так как дата окончания работ еще не наступила`)
+    }
     request.status = status;
 
     await request.save()
