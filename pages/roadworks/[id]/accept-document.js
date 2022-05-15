@@ -46,6 +46,8 @@ function AcceptDocuments(props) {
             if (json.isSuccess) {
                 Router.push('/profile')
             }
+        } else {
+            alert('Ошибка при смене статуса')
         }
     }
 
