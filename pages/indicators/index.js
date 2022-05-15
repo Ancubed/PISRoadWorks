@@ -34,7 +34,7 @@ const Indicators = ({ executors }) => {
                     {executors.map((executor, key) => (
                         <Row
                             companyName={executor.companyName}
-                            companyId={executor.companyId}
+                            companyId={executor.id}
                             total={
                                 executor.done +
                                     executor.inProgress +
