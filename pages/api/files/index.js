@@ -7,6 +7,8 @@ import { getSession } from 'next-auth/react'
 import GridFS from '../../../models/GridFS'
 import RequestModel from '../../../models/Request'
 
+import { MAX_FILES_COUNT } from '../../../lib/constants'
+
 import { 
     isSession,
     isAcceptByRole, 
@@ -50,8 +52,16 @@ const attachFileToRoadworks = async (res, roadwork, files) => {
     try {
         let request = await RequestModel.findById(roadwork)
         if (!request) throw generateApiError('Заявка не найдена', 500)
+        let newFiles = [...(request.files || []), ...files]
+        if (newFiles.length > MAX_FILES_COUNT) {
+            let removeFilesPromise = files.map(file => {
+                return GridFS.delete(file._id)
+            })
+            await Promise.all(removeFilesPromise)
+            throw generateApiError('Превышен лимит количества файлов', 400)
+        }
         request.status = 'submitted'
-        request.files = files
+        request.files = newFiles
         await request.save()
 
         return sendJson(res, 200, {
@@ -66,7 +76,7 @@ const attachFileToRoadworks = async (res, roadwork, files) => {
 }
 
 const filesUploadHandler = async (req, res) => {
-    await middlewareWrapper(req, res, upload.array('files', 10))
+    await middlewareWrapper(req, res, upload.array('files', MAX_FILES_COUNT))
 
     const { files } = req
     const { roadwork } = req.query
@@ -90,14 +100,6 @@ const filesUploadHandler = async (req, res) => {
     sendJson(res, 200)
 }
 
-const filesDownloadHandler = async (req, res) => {
-    const { id } = req.query;
-
-    if (!id) throw generateApiError('Не указан id', 400);
-
-    await GridFS.download(id, res)
-}
-
 const filesHandler = async (req, res) => {
     try {
 
@@ -107,17 +109,11 @@ const filesHandler = async (req, res) => {
             throw generateApiError('Доступ запрещен', 403);
 
         switch(req.method) {
-            case 'GET': {
-                return await filesDownloadHandler(req, res);
-            }
             case 'POST': {
                 return await filesUploadHandler(req, res);
             }
-            case 'DELETE': {
-                //return await (req, res);
-            }
             default:
-                res.setHeader('Allow', ['GET', 'POST', 'DELETE'])
+                res.setHeader('Allow', ['POST'])
                 return sendJson(res, 405, null, `Метод ${req.method} не разрешен`)
         }    
 
@@ -130,6 +126,6 @@ export default filesHandler
 
 export const config = {
     api: {
-      bodyParser: false,
+        bodyParser: false,
     }
 };
