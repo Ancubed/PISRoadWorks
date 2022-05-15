@@ -103,7 +103,7 @@ function AcceptDocuments(props) {
                     {props.roadwork.files && props.roadwork.files.length > 0 
                     ?
                         props.roadwork.files.map((file, idx) => 
-                            <a href={`/api/files?id=${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
+                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
                                 {`${idx + 1}. ${file.filename}`}
                             </a>
                         )
