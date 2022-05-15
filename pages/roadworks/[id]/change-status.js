@@ -29,7 +29,7 @@ function ChangeStatus(props) {
         });
     }
 
-    const onSubmit = async (status = 'done') => {
+    const onSubmit = async (e, status = 'done') => {
         let response = await getResponse(status)
         if (response.ok) {
             let json = await response.json()
@@ -46,10 +46,10 @@ function ChangeStatus(props) {
     if (!props.roadwork)
         return <Error errStatusCode={404} errMessage="Дорожная работа не существует"/>
 
-    if (!isAcceptByRole(session) && !isOwnerDataSession(session, props.roadwork.executorId))
+    if (!isAcceptByRole(session) && !isOwnerDataSession(session, props.roadwork.customerId))
         return <Error errStatusCode={403} errMessage="Нет доступа" />
 
-    if (props.roadwork.status !== 'inProgress')
+    if (!isAcceptByRole(session) && props.roadwork.status !== 'inProgress')
         return <Error errStatusCode={403} errMessage="Нет доступа"/>
 
     return (
@@ -90,10 +90,12 @@ function ChangeStatus(props) {
                         </div>)
                 }
             </div>
-            <div className='flex'>
+            <div>
                 <h1 className="text-2xl my-4">Изменить статус</h1>
-                <FormButton type="button" text='Выполнена' onClick={onSubmit} className='my-2'/>
-                <FormButton type="button" text='Просрочена' onClick={() => onSubmit('expired')} className='my-2'/>
+                <div className='flex'>
+                    <FormButton type="button" text='Выполнена' onClick={onSubmit} className='my-2'/>
+                    <FormButton type="button" text='Просрочена' onClick={(e) => onSubmit(e, 'expired')} className='my-2'/>
+                </div>
             </div>
         </main>
     )
@@ -111,6 +113,7 @@ export async function getServerSideProps(context) {
         id: work._id.toString(),
         executorId: work.executorId.toString(),
         executorName: work.executorName,
+        customerId: work.customerId.toString(),
         coordinates: work.coordinates,
         status: work.status,
         adress: work.adress,
