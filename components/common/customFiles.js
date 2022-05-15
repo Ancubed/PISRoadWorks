@@ -13,14 +13,18 @@ const generateUrl = (roadwork = null) => {
     return url;
 }
 
+const FILE_ERRORS = {
+    1: 'Запрещенный формат файла',
+    2: 'Файл слишком мальенький',
+    3: 'Файл слишком большой',
+    4: 'Достигнут лимит количества файлов'
+}
+
 const CustomFiles = (props) => {
     const [files, setFiles] = useState(props.file || [])
 
     function maxFileCount(filesState) {
         if (props.maxFiles && filesState.length > props.maxFiles || !props.maxFiles && filesState.length > MAX_FILES_COUNT) {
-            let err = new Error('Достигнут лимит файлов');
-            err.code = 4;
-            onFilesError(err);
             return true;
         }
         return false;
@@ -28,6 +32,7 @@ const CustomFiles = (props) => {
 
     function onFilesChange(newFiles) {
         let newFilesState = [...files, ...newFiles];
+        console.log(newFilesState);
 
         if (maxFileCount(newFilesState)) return;
 
@@ -35,8 +40,8 @@ const CustomFiles = (props) => {
     }
     
     function onFilesError(error, file) {
-        alert('Ошибка при загрузке файла ' + error.code + ': ' + error.message)
-        console.log('Ошибка при загрузке файла ' + error.code + ': ' + error.message)
+        alert('Ошибка при выборе файлов: ' + FILE_ERRORS[error.code] || error.message)
+        console.log('Ошибка при выборе файлов: ' + FILE_ERRORS[error.code] || error.message)
     }
 
     function filesRemoveOne(e) {
