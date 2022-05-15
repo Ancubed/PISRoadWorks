@@ -44,6 +44,10 @@ const RequestSchema = new mongoose.Schema({
         type: String,
         maxlength: [256, 'Комментарий не может быть больше 256 символов'],
     },
+    rejectComment: {
+        type: String,
+        maxlength: [256, 'Комментарий не может быть больше 256 символов'],
+    },
     coordinates: {
         type: Array,
     },
