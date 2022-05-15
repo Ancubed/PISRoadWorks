@@ -27,7 +27,7 @@ function SubmitDocuments(props) {
     }
 
     const handleDeleteLinkClick = async (fileId) => {
-        if(confirm('Вы уверены, что хотите удалить аккаунт?')) {
+        if(confirm('Вы уверены, что хотите удалить файл?')) {
             let response = await fetch(`/api/files/${fileId}`, {
                 method: 'delete',
                 headers: {
