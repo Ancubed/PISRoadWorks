@@ -1,5 +1,7 @@
 import { useSession, getSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+
 import Router from 'next/router'
 
 import Error from '../../../components/common/error'
@@ -97,19 +99,21 @@ function SubmitDocuments(props) {
                         {files && files.length > 0
                         &&
                             <div>
-                                <h2 className="text-xl mb-2">Загруженные ранее</h2>
+                                <h2 className="text-xl mb-4">Загруженные ранее</h2>
                                 {files.map((file, idx) => 
                                     <div key={idx} className='flex justify-between'>
                                         <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-blue-600'>
                                             {`${idx + 1}. ${file.filename}`}
                                         </a>
-                                        <span
+                                        <Image
+                                            src="/x.svg"
                                             className="p-1 cursor-pointer hover:text-blue-600"
                                             onClick={() => handleDeleteLinkClick(file._id)}
                                             title='Удалить'
-                                        >
-                                            <span>У.</span>
-                                        </span>
+                                            width={16} 
+                                            height={16}
+                                            alt="У."
+                                        />
                                     </div>)
                                 }
                             </div>

@@ -21,10 +21,10 @@ const AccountsLinksList = (props) => {
 
     return (
         <div className={`flex grow flex-col ${props.className}`}>
-            <h1 className="text-2xl mb-2">Аккаунты</h1>
+            <h1 className="text-2xl mb-4">Аккаунты</h1>
             {!accounts && !error && <LoadSpinner />}
             {!accounts && error || accounts?.length == 0 && !error && <p>Нет аккаунтов</p>}
-            {accounts && <div>
+            {accounts && <div className='-my-2'>
                 {accounts.map((acc, key) => {
                     return acc.id !== props.user.id ? (
                         <AccountsLink account={acc} key={key} user={props.user} deleteAcc={deleteAcc}/>

@@ -1,6 +1,7 @@
 import { useSession, getSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
+import Image from 'next/image'
 
 import Error from '../../../components/common/error'
 import FormButton from '../../../components/common/formButton'
@@ -105,8 +106,9 @@ function AcceptDocuments(props) {
                     {props.roadwork.files && props.roadwork.files.length > 0 
                     ?
                         props.roadwork.files.map((file, idx) => 
-                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-blue-600'>
-                                {`${idx + 1}. ${file.filename}`}
+                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='flex align-center hover:text-blue-600'>
+                                {`${idx + 1}. ${file.filename}`} 
+                                <Image src="/download.svg" alt="" width={16} height={16} />
                             </a>
                         )
                     :
@@ -117,20 +119,39 @@ function AcceptDocuments(props) {
             {props.roadwork.status != 'inProgress' && props.roadwork.status != 'expired' &&props.roadwork.status != 'done'
             && 
                 <div className=''>
-                    <h1 className="text-2xl my-4">Решение по работе</h1>
+                    <h1 className="text-2xl my-4 flex justify-between">
+                        Решение по работе
+                        {rejected 
+                        && 
+                        <button className={`inline justify-center hover:text-blue-600`}
+                            onClick={toggleReject}
+                        >
+                            <Image src="/x.svg" alt="Назад" width={16} height={16} />
+                        </button>
+                        }
+                    </h1>
                     {!rejected 
                     ?
                         <div className='flex'>
-                            <FormButton type="button" text='Принять' onClick={onAccept} className='my-2'/>
-                            <FormButton type="button" text='Отклонить' onClick={toggleReject} className='my-2'/>
+                            <FormButton 
+                            type="button" 
+                            text={<div className='flex justify-center'>
+                                <Image src="/check.svg" alt="" width={16} height={16} />
+                                <span className='ml-2'>Принять</span>
+                            </div>} 
+                            onClick={onAccept} 
+                            className='my-2'/>
+                            <FormButton 
+                            type="button" 
+                            text={<div className='flex justify-center'>
+                                <Image src="/x.svg" alt="" width={16} height={16} />
+                                <span className='ml-2'>Отклонить</span>
+                            </div>} 
+                            onClick={toggleReject} 
+                            className='my-2'/>
                         </div>
                     :
                         <div>
-                            <button className={`inline justify-center hover:text-blue-600`}
-                                onClick={toggleReject}
-                            >
-                                Назад
-                            </button>
                             <h2 className="text-xl">Укажите причину</h2>
                             <textarea onChange={onTextareaChange} value={rejectTextareaValue} className='w-full h-32 rounded border-2'></textarea>
                             <FormButton type="button" text='Отклонить' onClick={onReject} className='my-2'/>

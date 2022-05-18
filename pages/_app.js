@@ -13,7 +13,9 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
                 <HeadContainer />
                 <Header />
 
-                <Component {...pageProps} />
+                <div className="p-10 m-4 bg-white rounded-3xl text-gray-900 drop-shadow-lg">
+                    <Component {...pageProps} />
+                </div>
 
                 <Footer />
             </div>

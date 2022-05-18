@@ -1,6 +1,7 @@
 import { useSession, getSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
+import Image from 'next/image'
 
 import Error from '../../../components/common/error'
 import FormButton from '../../../components/common/formButton'
@@ -93,8 +94,22 @@ function ChangeStatus(props) {
             <div>
                 <h1 className="text-2xl my-4">Изменить статус</h1>
                 <div className='flex'>
-                    <FormButton type="button" text='Выполнена' onClick={onSubmit} className='my-2'/>
-                    <FormButton type="button" text='Просрочена' onClick={(e) => onSubmit(e, 'expired')} className='my-2'/>
+                    <FormButton 
+                    type="button" 
+                    text={<div className='flex justify-center'>
+                        <Image src="/check.svg" alt="" width={16} height={16} />
+                        <span className='ml-2'>Выполнена</span>
+                    </div>} 
+                    onClick={onSubmit} 
+                    className='my-2'/>
+                    <FormButton 
+                    type="button" 
+                    text={<div className='flex justify-center'>
+                        <Image src="/x.svg" alt="" width={16} height={16} />
+                        <span className='ml-2'>Просрочена</span>
+                    </div>} 
+                    onClick={(e) => onSubmit(e, 'expired')} 
+                    className='my-2'/>
                 </div>
             </div>
         </main>

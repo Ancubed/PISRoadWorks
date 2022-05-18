@@ -10,7 +10,7 @@ const Home = () => {
 
     return (
         <main>
-            <h1 className="text-2xl mb-2">Карта дорожных работ</h1>
+            <h1 className="text-2xl mb-4">Карта дорожных работ</h1>
             <YMaps>
                 <Map
                     defaultState={{

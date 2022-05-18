@@ -133,7 +133,7 @@ const CustomForm = (props: CustomFormProps) => {
                             (field.type == 'text' || field.type == 'password' || field.type == 'email') 
                             &&  
                             <input
-                                className="h-8"
+                                className="h-8 border-2 rounded p-1"
                                 type={field.type}
                                 id={field.id}
                                 name={field.id}
@@ -147,7 +147,7 @@ const CustomForm = (props: CustomFormProps) => {
                             field.type == 'select' 
                             && 
                             <select
-                                className="h-8"
+                                className="h-8 border-2 rounded p-1"
                                 id={field.id}
                                 name={field.id}
                                 required={field.required}
@@ -165,7 +165,7 @@ const CustomForm = (props: CustomFormProps) => {
                             (field.type == 'date') 
                             &&  
                             <input
-                                className="h-8"
+                                className="h-8 border-2 rounded p-1"
                                 type={field.type}
                                 id={field.id}
                                 name={field.id}
@@ -179,7 +179,7 @@ const CustomForm = (props: CustomFormProps) => {
                             (field.type == 'textarea') 
                             &&  
                             <textarea
-                                className="h-24"
+                                className="h-24 border-2 rounded p-1"
                                 id={field.id}
                                 name={field.id}
                                 required={field.required}
@@ -240,7 +240,7 @@ const CustomForm = (props: CustomFormProps) => {
     return (
         <form 
         onSubmit={handleSubmit} 
-        className={`p-4 border-2 rounded ${error && 'border-rose-500'} ${isSuccess && 'border-green-500'}`}>
+        className={`p-4 border-2 rounded p-1 ${error && 'border-rose-500'} ${isSuccess && 'border-green-500'}`}>
             {props.fields.map((field, key) => generateField(field, key))}
             {message 
             && 

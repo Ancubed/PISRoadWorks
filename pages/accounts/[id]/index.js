@@ -28,7 +28,7 @@ function Account(props) {
                         <h2 className="text-xl">Email</h2>
                         <span className="text-lg">{props.account.email}</span>
                     </div>
-                </div> 
+                </div>
                 <RoadWorksLinksList executor={props.account.id} className='basis-1/2'/>
             </div>
         </main>

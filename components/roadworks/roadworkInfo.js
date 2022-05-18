@@ -4,14 +4,14 @@ import { REQUEST_STATUS_ENUM, REQUEST_STATUS_COLOR } from '../../lib/constants'
 const RoadworkInfo = ({ className = '', roadwork }) => {
     return (
         <div className={`${className} flex flex-col`}>
-            <h1 className="text-2xl mb-2">Основная информация</h1>
+            <h1 className="text-2xl mb-4">Основная информация</h1>
             <div className="flex flex-col">
                 <div className="my-2">
                     <h2 className="text-xl">Исполнитель</h2>
                     <CustomLink
-                            href={`/accounts/${roadwork.executorId}`}
-                            className="hover:text-blue-600 text-lg"
-                        >
+                        href={`/accounts/${roadwork.executorId}`}
+                        className="hover:text-blue-600 text-lg"
+                    >
                         {roadwork.executorName}
                     </CustomLink>
                 </div>

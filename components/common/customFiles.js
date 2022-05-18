@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Image from 'next/image'
 import Files from 'react-files'
 
 import { MAX_FILES_COUNT } from '../../lib/constants'
@@ -85,7 +86,10 @@ const CustomFiles = (props) => {
                 minFileSize={0}
                 clickable
             >
-                Перенесите файлы сюда или кликните для загрузки
+                <div className='flex justify-center'>
+                    <Image src="/cloud-upload.svg" alt="" width={16} height={16} />
+                    <span className='ml-2'>Перенесите файлы сюда или кликните для загрузки</span>
+                </div>
             </Files>}
             {files && files.length > 0 
             &&
@@ -97,15 +101,17 @@ const CustomFiles = (props) => {
                                 <span className='font-semibold'>{file.name}</span>
                                 <span className='font-light'>{file.sizeReadable}</span>
                             </div>
-                            <div className='ml-8'>
-                                <span
+                            <div className='ml-8 flex justify-center'>
+                                <Image
+                                    src="/x.svg"
                                     className="p-1 cursor-pointer hover:text-blue-600"
                                     onClick={filesRemoveOne}
                                     title='Удалить'
                                     data-fileid={file.id}
-                                >
-                                    У.
-                                </span>
+                                    width={16} 
+                                    height={16}
+                                    alt="У."
+                                />
                             </div>
                         </div>
                     )}
