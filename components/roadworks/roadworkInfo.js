@@ -10,7 +10,7 @@ const RoadworkInfo = ({ className = '', roadwork }) => {
                     <h2 className="text-xl">Исполнитель</h2>
                     <CustomLink
                             href={`/accounts/${roadwork.executorId}`}
-                            className="hover:text-sky-600 text-lg"
+                            className="hover:text-blue-600 text-lg"
                         >
                         {roadwork.executorName}
                     </CustomLink>

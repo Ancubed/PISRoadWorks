@@ -99,7 +99,7 @@ const CustomFiles = (props) => {
                             </div>
                             <div className='ml-8'>
                                 <span
-                                    className="p-1 cursor-pointer hover:text-sky-600"
+                                    className="p-1 cursor-pointer hover:text-blue-600"
                                     onClick={filesRemoveOne}
                                     title='Удалить'
                                     data-fileid={file.id}

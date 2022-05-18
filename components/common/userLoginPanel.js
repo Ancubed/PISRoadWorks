@@ -9,12 +9,12 @@ const UserLoginPanel = (props) => {
     const { data: session, status } = useSession()
 
     return (
-        <div className="ml-auto mr-5 flex justify-end content-center">
+        <div className={`ml-auto mr-5 flex justify-end content-center ${props.className ? props.className : ''}`}>
             {status === 'authenticated' ? (
                 <Menu as="div" className="relative inline-block text-left z-10">
                     {({ open }) => (
                         <>
-                            <Menu.Button className="inline-flex text-right w-full h-full rounded-m bg-white text-sm font-medium text-gray-70 focus:outline-none">
+                            <Menu.Button className="inline-flex text-right w-full h-full rounded-m text-sm font-medium focus:outline-none">
                                 {session.user.name}
                                 <ChevronDownIcon
                                     className={`-mr-1 ml-2 h-5 w-5 transform duration-100 ${
@@ -35,7 +35,7 @@ const UserLoginPanel = (props) => {
                             >
                                 <Menu.Items
                                     static
-                                    className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg focus:outline-none"
                                 >
                                     <div className="py-1">
                                         <Menu.Item>

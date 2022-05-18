@@ -26,7 +26,7 @@ const RoadworksLink = (props) => {
         <div className='p-4 border-2 rounded flex justify-between'>
             <CustomLink
                 href={`/roadworks/${props.work.id}`}
-                className="flex grow flex-col p-1 hover:text-sky-600"
+                className="flex grow flex-col p-1 hover:text-blue-600"
             >
                 <span className="mr-4">{props.work.adress}</span>
                 <span className="mr-4">{props.work.executorName}</span>
@@ -41,13 +41,13 @@ const RoadworksLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/edit`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Редактировать'
                     >
                         <span>Р.</span>
                     </CustomLink>
                     <span
-                        className="p-1 cursor-pointer hover:text-sky-600"
+                        className="p-1 cursor-pointer hover:text-blue-600"
                         onClick={handleDeleteLinkClick}
                         title='Удалить'
                     >
@@ -59,7 +59,7 @@ const RoadworksLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/submit-document`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Загрузить или изменить документы на проведение дорожных работ'
                     >
                         <span>Загрузить документы</span>
@@ -70,7 +70,7 @@ const RoadworksLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/accept-document`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Проверить документы на проведение дорожных работ'
                     >
                         <span>Проверить документы</span>
@@ -81,7 +81,7 @@ const RoadworksLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/change-status`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Изменить статус выполненной или просроченной дорожной работы'
                     >
                         <span>Изменить статус</span>
@@ -92,7 +92,7 @@ const RoadworksLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/roadworks/${props.work.id}/change-status`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Изменить статус дорожной работы'
                     >
                         <span>Изменить статус</span>

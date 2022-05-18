@@ -84,7 +84,7 @@ function ChangeStatus(props) {
                 &&
                     props.roadwork.files.map((file, idx) => 
                         <div key={idx} className='flex justify-between'>
-                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-sky-600'>
+                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-blue-600'>
                                 {`${idx + 1}. ${file.filename}`}
                             </a>
                         </div>)

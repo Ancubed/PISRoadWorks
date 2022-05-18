@@ -22,7 +22,7 @@ const AccountsLink = (props) => {
         <div className='p-4 border-2 rounded flex justify-between'>
             <CustomLink
                 href={`/accounts/${props.account.id}`}
-                className="flex grow flex-col p-1 hover:text-sky-600"
+                className="flex grow flex-col p-1 hover:text-blue-600"
             >
                 <span className="mr-4">{props.account.company}</span>
                 <span className="mr-4">{props.account.name}</span>
@@ -34,13 +34,13 @@ const AccountsLink = (props) => {
                 <div>
                     <CustomLink
                         href={`/accounts/${props.account.id}/edit`}
-                        className="p-1 hover:text-sky-600"
+                        className="p-1 hover:text-blue-600"
                         title='Редактировать'
                     >
                         <span>Р.</span>
                     </CustomLink>
                     <span
-                        className="p-1 cursor-pointer hover:text-sky-600"
+                        className="p-1 cursor-pointer hover:text-blue-600"
                         onClick={handleDeleteLinkClick}
                         title='Удалить'
                     >

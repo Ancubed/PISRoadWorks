@@ -100,11 +100,11 @@ function SubmitDocuments(props) {
                                 <h2 className="text-xl mb-2">Загруженные ранее</h2>
                                 {files.map((file, idx) => 
                                     <div key={idx} className='flex justify-between'>
-                                        <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-sky-600'>
+                                        <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-blue-600'>
                                             {`${idx + 1}. ${file.filename}`}
                                         </a>
                                         <span
-                                            className="p-1 cursor-pointer hover:text-sky-600"
+                                            className="p-1 cursor-pointer hover:text-blue-600"
                                             onClick={() => handleDeleteLinkClick(file._id)}
                                             title='Удалить'
                                         >
@@ -120,7 +120,7 @@ function SubmitDocuments(props) {
                         {files && files.length > 0 
                         ?
                         files.map((file, idx) => 
-                                <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-sky-600'>
+                                <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='block hover:text-blue-600'>
                                     {`${idx + 1}. ${file.filename}`}
                                 </a>
                             )

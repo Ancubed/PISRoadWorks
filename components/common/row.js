@@ -27,7 +27,7 @@ const Row = ({
             <td>
                 <CustomLink 
                     href={companyId ? `/accounts/${companyId}` : '#'}
-                    className="flex grow flex-col p-1 hover:text-sky-600"
+                    className="flex grow flex-col p-1 hover:text-blue-600"
                 >
                     {companyName}
                 </CustomLink>

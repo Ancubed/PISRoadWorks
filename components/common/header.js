@@ -3,7 +3,7 @@ import UserLoginPanel from './userLoginPanel'
 
 const Header = () => {
     return (
-        <header className="flex -mx-5 items-center h-24">
+        <header className="flex -mx-5 px-5 items-center h-24">
             <h1 className="mx-5 text-3xl flex justify-end content-center">
                 <CustomLink href="/" title="Главная страница">PIS RoadWorks</CustomLink>
             </h1>
