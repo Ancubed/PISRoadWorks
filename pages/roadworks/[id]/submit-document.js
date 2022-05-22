@@ -101,7 +101,7 @@ function SubmitDocuments(props) {
                             <div>
                                 <h2 className="text-xl mb-4">Загруженные ранее</h2>
                                 {files.map((file, idx) => 
-                                    <div key={idx} className='flex justify-between'>
+                                    <div key={idx} className={`flex justify-between ${file.isRejected ? 'text-red-500' : ''}`}>
                                         <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='block hover:text-blue-600'>
                                             {`${idx + 1}. ${file.filename}`}
                                         </a>
@@ -161,7 +161,8 @@ export async function getServerSideProps(context) {
         files: work.files?.map(file => { 
             return {
                 _id: file._id.toString(),
-                filename: file.filename
+                filename: file.filename,
+                isRejected: file.isRejected || false
             }
         })
     }

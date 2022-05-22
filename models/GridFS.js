@@ -24,7 +24,8 @@ class GridFS {
             .on('error', (err) => reject(err))
             .on('finish', (file) => resolve({
                 _id: file._id,
-                filename: file.filename
+                filename: file.filename,
+                isRejected: true
             }))
         });
     }
