@@ -47,6 +47,8 @@ function AcceptDocuments(props) {
             let json = await response.json()
             if (json.isSuccess) {
                 Router.push('/profile')
+            } else {
+                alert(json.message || 'Ошибка при смене статуса')
             }
         } else {
             alert('Ошибка при смене статуса')
@@ -62,7 +64,11 @@ function AcceptDocuments(props) {
             let json = await response.json()
             if (json.isSuccess) {
                 Router.push('/profile')
+            } else {
+                alert(json.message || 'Ошибка при смене статуса')
             }
+        } else {
+            alert('Ошибка при смене статуса')
         }
     }
 
@@ -102,7 +108,10 @@ function AcceptDocuments(props) {
                 <RoadworkInfo className='m-2 flex basis-1/4 grow lg:grow-0' roadwork={props.roadwork}/>
             </div>
             <div className=''>
-                <h1 className="text-2xl my-4">Документы</h1>
+                <span className='flex items-center justify-between'>
+                    <h1 className="text-2xl my-4">Документы</h1>
+                    <p>Загружен верно</p>
+                </span>
                 <div>
                     {props.roadwork.files && props.roadwork.files.length > 0 
                     ?

@@ -20,6 +20,8 @@ const RejectedFileCheckbox = ({ roadworkId, fileId, isRejected }) => {
             let json = await response.json()
             if (json.isSuccess) {
                 setChecked(!checked);
+            } else {
+                alert(json.message || 'Ошибка при отметке файла')
             }
         } else {
             alert('Ошибка при отметке файла')

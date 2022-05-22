@@ -43,11 +43,20 @@ const changeRoadworkStatus = async (req, res) => {
         request.customerId)) 
             throw generateApiError('Доступ запрещен', 403)
 
-    if (status === 'rejected' && comment) request.rejectComment = comment;
+    if (status === 'rejected' && comment) {
+        if (!request.files.find(file => file.isRejected)) return notSuccess200Json(res, 'Все файлы не могут быть загружены верно при отклонении заявки')
+        request.rejectComment = comment;
+    }
+
+    if (status === 'inProgress') {
+        if (request.files.find(file => file.isRejected)) return notSuccess200Json(res, 'Все файлы должны быть загружены верно при одобрении заявки')
+    }
+
     if (status === 'done') {
         let dateOfStart = request.dateOfStart
         if (new Date(dateOfStart) > new Date()) return notSuccess200Json(res, `Заявка не может иметь статус "Выполнена", так как дата начала работ еще не наступила`)
     }
+    
     if (status === 'expired') {
         let dateOfEnd = request.dateOfStart
         if (new Date(dateOfEnd) > new Date()) return notSuccess200Json(res, `Заявка не может иметь статус "Просрочена", так как дата окончания работ еще не наступила`)
