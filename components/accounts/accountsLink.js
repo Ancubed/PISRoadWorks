@@ -45,7 +45,7 @@ const AccountsLink = (props) => {
                         onClick={handleDeleteLinkClick}
                         title='Удалить'
                     >
-                        <Image src="/x.svg" alt="У." width={16} height={16} />
+                        <Image src="/trash.svg" alt="У." width={16} height={16} />
                     </span>
                 </div>}
             </div>  

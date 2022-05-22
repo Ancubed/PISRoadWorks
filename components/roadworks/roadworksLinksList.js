@@ -16,7 +16,6 @@ const generateUrl = (executor, customer, status, coords) => {
         if (status) url += `status=${status}${coords ? '&' : ''}`
         if (coords) url += `coords=${coords}`
     }
-    console.log(url)
     return url;
 }
 
@@ -43,12 +42,13 @@ const RoadworksLinksList = (props) => {
             {!roadworks && error || roadworks?.length == 0 && !error && <p>Нет дорожных работ</p>}
             {roadworks && <div className='-my-2'>
                 {roadworks.map((work, key) => 
-                <RoadworksLink 
-                    work={work} 
-                    key={key} 
-                    user={props.user} 
-                    deleteWork={deleteWork}/>
-                )}
+                    <RoadworksLink 
+                        work={work} 
+                        key={key} 
+                        user={props.user} 
+                        deleteWork={deleteWork}/>
+                    )
+                }
             </div>}
             {[0,1].includes(props.user?.role?.id)
             && 

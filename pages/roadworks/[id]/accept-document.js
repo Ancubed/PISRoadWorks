@@ -126,7 +126,7 @@ function AcceptDocuments(props) {
                         <button className={`inline justify-center hover:text-blue-600`}
                             onClick={toggleReject}
                         >
-                            <Image src="/x.svg" alt="Назад" width={16} height={16} />
+                            <Image src="/reply.svg" alt="Назад" width={16} height={16} />
                         </button>
                         }
                     </h1>
