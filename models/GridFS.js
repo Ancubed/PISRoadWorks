@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+import { translit } from '../lib/functions';
+
 import dbConnect from '../lib/mongoose'
 (async () => await dbConnect())(); 
 
@@ -34,7 +36,7 @@ class GridFS {
             .then(files => {
                 if (!files || files.length === 0) reject(new Error('Файл не найден'))
 
-                res.setHeader('Content-Disposition', `attachment; filename=${files[0].filename}`)
+                res.setHeader('Content-Disposition', `attachment; filename=${translit(files[0].filename)}`)
 
                 this.bucket.openDownloadStream(new mongoose.Types.ObjectId(fileId))
                 .pipe(res)

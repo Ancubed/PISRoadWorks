@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 import Error from '../../../components/common/error'
 import FormButton from '../../../components/common/formButton'
+import RejectedFileCheckbox from '../../../components/common/rejectedFileCheckbox'
 
 import { YMaps, Map, Polyline } from 'react-yandex-maps';
 
@@ -18,7 +19,7 @@ import { isAcceptByRole, isOwnerDataSession } from '../../../lib/functions'
 function AcceptDocuments(props) {
     const { data: session } = useSession()
     const [rejected, setRejected] = useState(false)
-    const [rejectTextareaValue, setRejectTextareaValue] = useState(props.roadwork.rejectComment || '')
+    const [rejectTextareaValue, setRejectTextareaValue] = useState(props.roadwork?.rejectComment || '')
 
     const onTextareaChange = (e) => {
         setRejectTextareaValue(e.target.value)
@@ -106,10 +107,13 @@ function AcceptDocuments(props) {
                     {props.roadwork.files && props.roadwork.files.length > 0 
                     ?
                         props.roadwork.files.map((file, idx) => 
-                            <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" key={idx} className='flex align-center hover:text-blue-600'>
-                                {`${idx + 1}. ${file.filename}`} 
-                                <Image src="/download.svg" alt="" width={16} height={16} />
-                            </a>
+                            <span key={idx} className='flex justify-between'>
+                                <a href={`/api/files/${file._id}`} target="_blank" rel="noreferrer" className='flex align-center hover:text-blue-600'>
+                                    {`${idx + 1}. ${file.filename}`} 
+                                    <Image src="/download.svg" alt="" width={16} height={16} />
+                                </a>
+                                <RejectedFileCheckbox roadworkId={props.roadwork.id} fileId={file._id} isRejected={file.isRejected} className='self-center justify-self-end' />
+                            </span>
                         )
                     :
                         <div>Нет прикрепленных документов</div>
@@ -183,10 +187,11 @@ export async function getServerSideProps(context) {
         dateEnd: dateFormatFromISO(work.dateOfEnd?.toISOString()),
         comment: work.comment,
         rejectComment: work.rejectComment,
-        files: work.files?.map(file => { 
+        files: work.files?.map(file => {
             return {
                 _id: file._id.toString(),
-                filename: file.filename
+                filename: file.filename,
+                isRejected: file.isRejected || false
             }
         })
     }
