@@ -13,6 +13,7 @@
         "@heroicons/react": "^1.0.5",
         "@types/yandex-maps": "^2.1.20",
         "bcrypt": "^5.0.1",
+        "chart.js": "^3.8.0",
         "email-validator": "^2.0.4",
         "install": "^0.13.0",
         "mongoose": "^6.3.3",
@@ -21,10 +22,10 @@
         "next-auth": "^4.1.0",
         "npm": "^8.3.0",
         "react": "17.0.2",
+        "react-chartjs-2": "^4.1.0",
         "react-dom": "17.0.2",
         "react-files": "^3.0.0-alpha.3",
         "react-yandex-maps": "^4.6.0",
-        "recharts": "^2.1.9",
         "swr": "^1.2.1"
     },
     "devDependencies": {
