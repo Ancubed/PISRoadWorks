@@ -9,7 +9,7 @@ const UserLoginPanel = (props) => {
     const { data: session, status } = useSession()
 
     return (
-        <div className={`ml-auto mr-5 flex justify-end content-center ${props.className ? props.className : ''}`}>
+        <div className={`${props.className ? props.className : ''}`}>
             {status === 'authenticated' ? (
                 <Menu as="div" className="relative inline-block text-left z-10">
                     {({ open }) => (

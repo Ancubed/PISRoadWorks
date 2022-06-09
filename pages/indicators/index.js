@@ -10,7 +10,7 @@ const matrixWeight = {
 
 const Indicators = ({ executors }) => {
     return (
-        <main>
+        <main className='overflow-x-scroll'>
             <h1 className="text-2xl mb-4">Показатели выполнения работ</h1>
             {(!executors || executors.length == 0) 
             && 
