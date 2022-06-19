@@ -57,6 +57,7 @@ async function decisionMatrix(executors) {
         const done = executors[i].done,
             inProgress = executors[i].inProgress,
             expired = executors[i].expired
+            
         executors[i].grade =
             done * matrixWeight.done +
             inProgress * matrixWeight.inProgress +
