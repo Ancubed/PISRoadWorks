@@ -5,7 +5,6 @@ import { YMaps, Map, Polyline } from 'react-yandex-maps'
 import RoadWorksLinksList from '../components/roadworks/roadworksLinksList'
 
 const Home = () => {
-
     const [roadworks, setRoadworks] = useState(null)
 
     return (
