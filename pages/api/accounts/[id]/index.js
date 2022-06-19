@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt'
+import { hash } from 'bcrypt'
 
 import { getSession } from 'next-auth/react'
 
@@ -74,7 +74,7 @@ const editAccount = async (req, res) => {
         if (password !== repeatPassword)
             return notSuccess200Json(res, 'Пароли не совпадают');
 
-        updatingObject.password = await bcrypt.hash(password, 10);
+        updatingObject.password = await hash(password, 10);
     }
 
     await UserModel.findByIdAndUpdate(id, updatingObject);
