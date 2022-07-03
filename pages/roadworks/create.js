@@ -53,7 +53,7 @@ const CreateRoadworks = (props) => {
             id: 'comment',
             labelText: 'Комментарий',
             required: false,
-            value: '',
+            value: ''
         }
     ];
 
