@@ -1,7 +1,5 @@
 import { useState } from 'react'
-
 import { YMaps, Map, Polyline } from 'react-yandex-maps'
-
 import RoadWorksLinksList from '../components/roadworks/roadworksLinksList'
 
 const Home = () => {
