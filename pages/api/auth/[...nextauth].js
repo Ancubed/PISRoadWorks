@@ -56,11 +56,11 @@ export default NextAuth({
             return token
         },
         async session({ session, token, user }) {
-            session?.user?.name = token?.name,
-            session?.user?.email = token?.email,
-            session?.user?.company = token?.company,
-            session?.user?.role = token?.role,
-            session?.user?.id = token?.id
+            session.user.name = token?.name,
+            session.user.email = token?.email,
+            session.user.company = token?.company,
+            session.user.role = token?.role,
+            session.user.id = token?.id
             //console.log(session, token);
             return session
         }
