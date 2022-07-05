@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";

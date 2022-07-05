@@ -1,5 +1,5 @@
 import * as emailValidator from 'email-validator'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 import { getSession } from 'next-auth/react'
 
