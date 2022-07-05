@@ -4,11 +4,7 @@ FROM node:16-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN apk add --update --no-cache python make g++  \
-   ca-certificates \
-   curl \
-   git \
-   wget  
+RUN apk add --update python make g++ && rm -rf /var/cache/apk/*
 
 COPY package.json package-lock.json ./ 
 RUN npm install
